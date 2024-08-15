@@ -183,35 +183,61 @@
 //   );
 // }
 
-
-
-"use client"
-import Link from "next/link"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { CartesianGrid, XAxis, Line, LineChart } from "recharts"
-import { ChartTooltipContent, ChartTooltip, ChartContainer } from "@/components/ui/chart"
-import Image from "next/image"
+"use client";
+import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { CartesianGrid, XAxis, Line, LineChart } from "recharts";
+import {
+  ChartTooltipContent,
+  ChartTooltip,
+  ChartContainer,
+} from "@/components/ui/chart";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      
       <main className="flex-1 px-4 py-6 sm:px-6">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Button className="flex-1">New Sale</Button>
-          <Button variant="secondary" className="flex-1">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Button
+            onClick={() => router.push("/sales/newsale")} // Use router.push for navigation
+            className="ml-4 py-2 px-4 rounded border"
+          >
+            New Sale
+          </Button>
+
+          <Button
+            onClick={() => router.push("/purchases/newpurchase")} // Use router.push for navigation
+            className="ml-4 py-2 px-4 rounded border"
+          >
             New Purchase
           </Button>
-          <Button variant="secondary" className="flex-1">
+          <Button
+            onClick={() => router.push("/inventory/newitem")} // Use router.push for navigation
+            className="ml-4 py-2 px-4 rounded border"
+          >
             New Item
           </Button>
         </div>
         <div className="mt-6 rounded-lg border bg-background p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold">Fast Moving Items</h2>
-            <Link href="#" className="text-primary hover:underline" prefetch={false}>
+            <Link
+              href="#"
+              className="text-primary hover:underline"
+              prefetch={false}
+            >
               View All
             </Link>
           </div>
@@ -295,7 +321,7 @@ export default function Home() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 function LinechartChart(props) {
@@ -332,14 +358,22 @@ function LinechartChart(props) {
             tickMargin={8}
             tickFormatter={(value) => value.slice(0, 3)}
           />
-          <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-          <Line dataKey="desktop" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent hideLabel />}
+          />
+          <Line
+            dataKey="desktop"
+            type="natural"
+            stroke="var(--color-desktop)"
+            strokeWidth={2}
+            dot={false}
+          />
         </LineChart>
       </ChartContainer>
     </div>
-  )
+  );
 }
-
 
 function MountainIcon(props) {
   return (
@@ -357,5 +391,5 @@ function MountainIcon(props) {
     >
       <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
     </svg>
-  )
+  );
 }
