@@ -33,15 +33,15 @@ export default function LeftSideBar() {
   return (
     <Sheet>
       <div className="min-h-screen static ">
-        <SheetClose asChild>
-          <Button>Close</Button>
-        </SheetClose>
         <aside
           className={`fixed inset-y-0 left-0 z-10 flex ${
             isCollapsed ? "w-16" : "w-64"
           } flex-col border-r bg-background transition-all duration-300 sm:static sm:w-64`}
           data-collapsed={isCollapsed}
         >
+          <SheetClose asChild>
+            <Button>X</Button>
+          </SheetClose>
           <div className="flex h-12 items-center justify-between px-4">
             <Button
               variant="ghost"
@@ -250,18 +250,32 @@ export default function LeftSideBar() {
                 <Button variant="ghost" className="w-full justify-start gap-2">
                   <Avatar className="h-6 w-6 border">
                     <AvatarImage src="/placeholder-user.jpg" alt="Avatar" />
-                    <AvatarFallback>JD</AvatarFallback>
+                    <AvatarFallback>KM</AvatarFallback>
                   </Avatar>
-                  <span>John Doe</span>
+                  <span>Kelly Mweu</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="start" forceMount>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
+              <DropdownMenuContent
+                className="bg-gray-300 w-56"
+                align="start"
+                forceMount
+              >
+                <DropdownMenuItem className="hover:bg-gray-100">
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-100">
+                  Billing
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-100">
+                  Team
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-gray-100">
+                  Subscription
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Sign out</DropdownMenuItem>
+                <DropdownMenuItem className="text-red-600 hover:bg-red-50">
+                  Sign out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

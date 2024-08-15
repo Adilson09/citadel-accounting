@@ -35,7 +35,7 @@ import {
 
 // API function to save the sale
 const saveSale = async (saleData) => {
-  const response = await fetch("/api/sales", {
+  const response = await fetch("http://127.0.0.1:8000/api/sales", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(saleData),
@@ -108,7 +108,7 @@ export default function NewSale() {
 
   return (
     <>
-      <Card className="w-full max-w-2xl">
+      <Card className="px-8 mt-4 w-full max-w-2xl">
         <CardHeader className="relative">
           <CardTitle>New Sale</CardTitle>
           <Button

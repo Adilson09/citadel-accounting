@@ -1,190 +1,241 @@
-// "use client"
-
+// "use client";
+// import React, { useState } from "react";
+// import { useRouter } from "next/navigation";
+// import { Button } from "@/components/ui/button";
+// import { Card, CardContent } from "@/components/ui/card";
 // import {
-//   Card,
-//   CardHeader,
-//   CardDescription,
-//   CardTitle,
-//   CardContent,
-// } from "@/components/ui/card";
-// import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-// import { CartesianGrid, XAxis, Bar, BarChart, Line, LineChart } from "recharts";
+//   BarChart,
+//   Bar,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   Legend,
+//   ResponsiveContainer,
+// } from "recharts";
 // import {
-//   ChartTooltipContent,
-//   ChartTooltip,
-//   ChartContainer,
-// } from "@/components/ui/chart";
+//   DropdownMenu,
+//   DropdownMenuTrigger,
+//   DropdownMenuContent,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuItem,
+// } from "@/components/ui/dropdown-menu";
 
 // export default function Home() {
-//   return (
-//     <div className="grid min-h-screen w-full grid-cols-1 gap-4 bg-muted/40 p-4 md:grid-cols-2 md:gap-8 md:p-2 lg:grid-cols-3 lg:gap-12 lg:p-12">
-//       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
-//         <Card>
-//           <CardHeader>
-//             <CardDescription>Total Assets</CardDescription>
-//             <CardTitle>$1,234,567</CardTitle>
-//           </CardHeader>
-//         </Card>
-//         <Card>
-//           <CardHeader>
-//             <CardDescription>Total Liabilities</CardDescription>
-//             <CardTitle>$456,789</CardTitle>
-//           </CardHeader>
-//         </Card>
-//         <Card>
-//           <CardHeader>
-//             <CardDescription>Equity</CardDescription>
-//             <CardTitle>$777,778</CardTitle>
-//           </CardHeader>
-//         </Card>
-//       </div>
-//       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-1">
-//         <Card>
-//           <CardHeader>
-//             <CardDescription>Sales</CardDescription>
-//             <CardTitle>$987,654</CardTitle>
-//           </CardHeader>
-//         </Card>
-//         <Card>
-//           <CardHeader>
-//             <CardDescription>Expenses</CardDescription>
-//             <CardTitle>$654,321</CardTitle>
-//           </CardHeader>
-//         </Card>
-//         <Card>
-//           <CardHeader>
-//             <CardDescription>Purchases</CardDescription>
-//             <CardTitle>$321,987</CardTitle>
-//           </CardHeader>
-//         </Card>
-//       </div>
-//       <div className="col-span-1 lg:col-span-2">
-//         <Card>
-//           <CardHeader>
-//             <CardTitle>Financial Charts</CardTitle>
-//             <CardDescription>
-//               Visualize your key financial metrics
-//             </CardDescription>
-//           </CardHeader>
-//           <CardContent>
-//             <Tabs defaultValue="bar">
-//               <TabsList>
-//                 <TabsTrigger value="bar">Bar Chart</TabsTrigger>
-//                 <TabsTrigger value="line">Line Chart</TabsTrigger>
-//                 <TabsTrigger value="comparative">Comparative Chart</TabsTrigger>
-//               </TabsList>
-//               <TabsContent value="bar">
-//                 <BarchartChart className="aspect-[16/9]" />
-//               </TabsContent>
-//               <TabsContent value="line">
-//                 <LinechartChart className="aspect-[16/9]" />
-//               </TabsContent>
-//               <TabsContent value="comparative">
-//                 <BarchartChart className="aspect-[16/9]" />
-//               </TabsContent>
-//             </Tabs>
-//           </CardContent>
-//         </Card>
-//       </div>
-//     </div>
-//   );
-// }
+//   const router = useRouter();
+//   const [view, setView] = useState("This Month");
+//   const [subView, setSubView] = useState("Day by Day"); // New state for day-by-day or week-by-week
 
-// function BarchartChart(props) {
-//   return (
-//     <div {...props}>
-//       <ChartContainer
-//         config={{
-//           desktop: {
-//             label: "Desktop",
-//             color: "hsl(var(--chart-1))",
-//           },
-//         }}
-//         className="min-h-[300px]"
-//       >
-//         <BarChart
-//           accessibilityLayer
-//           data={[
-//             { month: "January", desktop: 186 },
-//             { month: "February", desktop: 305 },
-//             { month: "March", desktop: 237 },
-//             { month: "April", desktop: 73 },
-//             { month: "May", desktop: 209 },
-//             { month: "June", desktop: 214 },
-//           ]}
-//         >
-//           <CartesianGrid vertical={false} />
-//           <XAxis
-//             dataKey="month"
-//             tickLine={false}
-//             tickMargin={10}
-//             axisLine={false}
-//             tickFormatter={(value) => value.slice(0, 3)}
-//           />
-//           <ChartTooltip
-//             cursor={false}
-//             content={<ChartTooltipContent hideLabel />}
-//           />
-//           <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
-//         </BarChart>
-//       </ChartContainer>
-//     </div>
-//   );
-// }
+//   // Example data for day-by-day analysis for the current month
+//   const dataDayByDay = [
+//     { day: "1", sales: 20, expenses: 15, profit: 5 },
+//     { day: "2", sales: 25, expenses: 18, profit: 7 },
+//     { day: "3", sales: 30, expenses: 20, profit: 10 },
+//     // ... data for each day
+//   ];
 
-// function LinechartChart(props) {
+//   // Example data for week-by-week analysis for the current month
+//   const dataWeekByWeek = [
+//     { week: "Week 1", sales: 75, expenses: 50, profit: 25 },
+//     { week: "Week 2", sales: 90, expenses: 60, profit: 30 },
+//     // ... data for each week
+//   ];
+
+//   const dataThisMonth =
+//     subView === "Day by Day" ? dataDayByDay : dataWeekByWeek;
+
+//   const dataLastMonth = [
+//     { month: "July", sales: 150, expenses: 90, profit: 60 },
+//   ];
+
+//   const dataYTD = [
+//     { month: "January", sales: 186, expenses: 123, profit: 63 },
+//     { month: "February", sales: 305, expenses: 200, profit: 105 },
+//     { month: "March", sales: 237, expenses: 150, profit: 87 },
+//     { month: "April", sales: 73, expenses: 50, profit: 23 },
+//     { month: "May", sales: 209, expenses: 170, profit: 39 },
+//     { month: "June", sales: 214, expenses: 180, profit: 34 },
+//     { month: "July", sales: 150, expenses: 90, profit: 60 },
+//     { month: "August", sales: 120, expenses: 80, profit: 40 },
+//   ];
+
+//   let data;
+//   if (view === "This Month") {
+//     data = dataThisMonth;
+//   } else if (view === "Last Month") {
+//     data = dataLastMonth;
+//   } else {
+//     data = dataYTD;
+//   }
+
 //   return (
-//     <div {...props}>
-//       <ChartContainer
-//         config={{
-//           desktop: {
-//             label: "Desktop",
-//             color: "hsl(var(--chart-1))",
-//           },
-//         }}
-//       >
-//         <LineChart
-//           accessibilityLayer
-//           data={[
-//             { month: "January", desktop: 186 },
-//             { month: "February", desktop: 305 },
-//             { month: "March", desktop: 237 },
-//             { month: "April", desktop: 73 },
-//             { month: "May", desktop: 209 },
-//             { month: "June", desktop: 214 },
-//           ]}
-//           margin={{
-//             left: 12,
-//             right: 12,
-//           }}
-//         >
-//           <CartesianGrid vertical={false} />
-//           <XAxis
-//             dataKey="month"
-//             tickLine={false}
-//             axisLine={false}
-//             tickMargin={8}
-//             tickFormatter={(value) => value.slice(0, 3)}
-//           />
-//           <ChartTooltip
-//             cursor={false}
-//             content={<ChartTooltipContent hideLabel />}
-//           />
-//           <Line
-//             dataKey="desktop"
-//             type="natural"
-//             stroke="var(--color-desktop)"
-//             strokeWidth={2}
-//             dot={false}
-//           />
-//         </LineChart>
-//       </ChartContainer>
+//     <div className="flex min-h-screen flex-col bg-background w-full">
+//       <main className="flex-1 px-2 py-6 sm:px-6">
+//         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+//           <Button
+//             onClick={() => router.push("/sales/newsale")} // Use router.push for navigation
+//             className="ml-4 py-2 px-4 rounded border"
+//           >
+//             New Sale
+//           </Button>
+
+//           <Button
+//             onClick={() => router.push("/purchases/newpurchase")} // Use router.push for navigation
+//             className="ml-4 py-2 px-4 rounded border"
+//           >
+//             New Purchase
+//           </Button>
+//           <Button
+//             onClick={() => router.push("/inventory/newitem")} // Use router.push for navigation
+//             className="ml-4 py-2 px-4 rounded border"
+//           >
+//             New Item
+//           </Button>
+//         </div>
+//         <div className="mt-6 rounded-lg border bg-background p-6">
+//           <div className="flex items-center justify-between">
+//             <h2 className="text-lg font-bold">Fast Moving Items</h2>
+//             <Button
+//               onClick={() => router.push("/inventory")} // Use router.push for navigation
+//               className="ml-4 py-2 px-4 rounded border text-primary"
+//             >
+//               View All Items
+//             </Button>
+//           </div>
+//           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+//             <Card>
+//               <CardContent>
+//                 <div className="flex items-center justify-between">
+//                   <div>
+//                     <h3 className="text-lg font-bold">Item 1</h3>
+//                   </div>
+//                   <div className="text-right">
+//                     <p className="text-muted-foreground">100 sold</p>
+//                   </div>
+//                 </div>
+//               </CardContent>
+//             </Card>
+//             <Card>
+//               <CardContent>
+//                 <div className="flex items-center justify-between">
+//                   <div>
+//                     <h3 className="text-lg font-bold">Item 2</h3>
+//                   </div>
+//                   <div className="text-right">
+//                     <p className="text-muted-foreground">75 sold</p>
+//                   </div>
+//                 </div>
+//               </CardContent>
+//             </Card>
+//             <Card>
+//               <CardContent>
+//                 <div className="flex items-center justify-between">
+//                   <div>
+//                     <h3 className="text-lg font-bold">Item 3</h3>
+//                   </div>
+//                   <div className="text-right">
+//                     <p className="text-muted-foreground">125 sold</p>
+//                   </div>
+//                 </div>
+//               </CardContent>
+//             </Card>
+//           </div>
+//         </div>
+//         <div className="mt-6 rounded-lg border bg-background p-6">
+//           <div className="flex items-center justify-between">
+//             <h2 className="text-lg font-bold">Sales, Expenses, and Revenue</h2>
+//             <DropdownMenu>
+//               <DropdownMenuTrigger>
+//                 <Button variant="outline" size="sm">
+//                   {view} - {subView}
+//                 </Button>
+//               </DropdownMenuTrigger>
+//               <DropdownMenuContent>
+//                 <DropdownMenuLabel>View Options</DropdownMenuLabel>
+//                 <DropdownMenuItem
+//                   onClick={() => {
+//                     setView("This Month");
+//                     setSubView("Day by Day");
+//                   }}
+//                 >
+//                   This Month - Day by Day
+//                 </DropdownMenuItem>
+//                 <DropdownMenuItem
+//                   onClick={() => {
+//                     setView("This Month");
+//                     setSubView("Week by Week");
+//                   }}
+//                 >
+//                   This Month - Week by Week
+//                 </DropdownMenuItem>
+//                 <DropdownMenuSeparator />
+//                 <DropdownMenuItem onClick={() => setView("Last Month")}>
+//                   Last Month
+//                 </DropdownMenuItem>
+//                 <DropdownMenuSeparator />
+//                 <DropdownMenuItem onClick={() => setView("YTD")}>
+//                   YTD
+//                 </DropdownMenuItem>
+//                 <DropdownMenuSeparator />
+//                 <DropdownMenuItem
+//                   onClick={() =>
+//                     alert(
+//                       "Custom Time Period functionality not yet implemented"
+//                     )
+//                   }
+//                 >
+//                   Custom Time Period
+//                 </DropdownMenuItem>
+//               </DropdownMenuContent>
+//             </DropdownMenu>
+//           </div>
+//           <div className="mt-4 aspect-[16/9]">
+//             <ResponsiveContainer width="100%" height={400}>
+//               <BarChart
+//                 data={data}
+//                 margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+//               >
+//                 <CartesianGrid strokeDasharray="3 3" />
+//                 <XAxis
+//                   dataKey={
+//                     view === "This Month" && subView === "Day by Day"
+//                       ? "day"
+//                       : view === "This Month" && subView === "Week by Week"
+//                       ? "week"
+//                       : "month"
+//                   }
+//                 />
+//                 <YAxis />
+//                 <Tooltip />
+//                 <Legend />
+//                 <Bar dataKey="sales" fill="#8884d8" />
+//                 <Bar dataKey="expenses" fill="#82ca9d" />
+//                 <Bar dataKey="profit" fill="#ffc658" />
+//               </BarChart>
+//             </ResponsiveContainer>
+//           </div>
+//         </div>
+//       </main>
 //     </div>
 //   );
 // }
 
 "use client";
-import Link from "next/link";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -193,38 +244,105 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { CartesianGrid, XAxis, Line, LineChart } from "recharts";
 import {
-  ChartTooltipContent,
-  ChartTooltip,
-  ChartContainer,
-} from "@/components/ui/chart";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Calendar } from "@/components/ui/calendar";
 
 export default function Home() {
   const router = useRouter();
+  const [view, setView] = useState("This Month");
+  const [subView, setSubView] = useState("Day by Day");
+  const [customDateRange, setCustomDateRange] = useState({
+    start: null,
+    end: null,
+  });
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  // Example data for different views
+  const dataDayByDay = [
+    { day: "1", sales: 20, expenses: 15, profit: 5 },
+    { day: "2", sales: 25, expenses: 18, profit: 7 },
+    { day: "3", sales: 30, expenses: 20, profit: 10 },
+    // ... more data for each day
+  ];
+
+  const dataWeekByWeek = [
+    { week: "Week 1", sales: 75, expenses: 50, profit: 25 },
+    { week: "Week 2", sales: 90, expenses: 60, profit: 30 },
+    // ... more data for each week
+  ];
+
+  const dataThisMonth =
+    subView === "Day by Day" ? dataDayByDay : dataWeekByWeek;
+
+  const dataLastMonth = [
+    { month: "July", sales: 150, expenses: 90, profit: 60 },
+  ];
+
+  const dataYTD = [
+    { month: "January", sales: 186, expenses: 123, profit: 63 },
+    { month: "February", sales: 305, expenses: 200, profit: 105 },
+    { month: "March", sales: 237, expenses: 150, profit: 87 },
+    { month: "April", sales: 73, expenses: 50, profit: 23 },
+    { month: "May", sales: 209, expenses: 170, profit: 39 },
+    { month: "June", sales: 214, expenses: 180, profit: 34 },
+    { month: "July", sales: 150, expenses: 90, profit: 60 },
+    { month: "August", sales: 120, expenses: 80, profit: 40 },
+  ];
+
+  const dataCustom =
+    customDateRange.start && customDateRange.end
+      ? dataYTD.filter((item) => {
+          const date = new Date(item.month);
+          return (
+            date >= new Date(customDateRange.start) &&
+            date <= new Date(customDateRange.end)
+          );
+        })
+      : [];
+
+  let data;
+  if (view === "This Month") {
+    data = dataThisMonth;
+  } else if (view === "Last Month") {
+    data = dataLastMonth;
+  } else if (view === "Custom") {
+    data = dataCustom;
+  } else {
+    data = dataYTD;
+  }
+
+  const handleCustomDateChange = () => {
+    setView("Custom");
+    setDialogOpen(false);
+  };
+
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <main className="flex-1 px-4 py-6 sm:px-6">
+    <div className="flex min-h-screen flex-col bg-background w-full">
+      <main className="flex-1 px-2 py-6 sm:px-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Button
-            onClick={() => router.push("/sales/newsale")} // Use router.push for navigation
+            onClick={() => router.push("/sales/newsale")}
             className="ml-4 py-2 px-4 rounded border"
           >
             New Sale
           </Button>
 
           <Button
-            onClick={() => router.push("/purchases/newpurchase")} // Use router.push for navigation
+            onClick={() => router.push("/purchases/newpurchase")}
             className="ml-4 py-2 px-4 rounded border"
           >
             New Purchase
           </Button>
           <Button
-            onClick={() => router.push("/inventory/newitem")} // Use router.push for navigation
+            onClick={() => router.push("/inventory/newitem")}
             className="ml-4 py-2 px-4 rounded border"
           >
             New Item
@@ -233,24 +351,21 @@ export default function Home() {
         <div className="mt-6 rounded-lg border bg-background p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold">Fast Moving Items</h2>
-            <Link
-              href="#"
-              className="text-primary hover:underline"
-              prefetch={false}
+            <Button
+              onClick={() => router.push("/inventory")}
+              className="ml-4 py-2 px-4 rounded border text-primary"
             >
-              View All
-            </Link>
+              View All Items
+            </Button>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             <Card>
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-bold">Acme Widget</h3>
-                    <p className="text-muted-foreground">SKU: 123456</p>
+                    <h3 className="text-lg font-bold">Item 1</h3>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold">$49.99</p>
                     <p className="text-muted-foreground">100 sold</p>
                   </div>
                 </div>
@@ -260,11 +375,9 @@ export default function Home() {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-bold">Acme Gadget</h3>
-                    <p className="text-muted-foreground">SKU: 654321</p>
+                    <h3 className="text-lg font-bold">Item 2</h3>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold">$99.99</p>
                     <p className="text-muted-foreground">75 sold</p>
                   </div>
                 </div>
@@ -274,26 +387,10 @@ export default function Home() {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-bold">Acme Thingamajig</h3>
-                    <p className="text-muted-foreground">SKU: 987654</p>
+                    <h3 className="text-lg font-bold">Item 3</h3>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold">$24.99</p>
                     <p className="text-muted-foreground">125 sold</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-bold">Acme Doodad</h3>
-                    <p className="text-muted-foreground">SKU: 456789</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-bold">$14.99</p>
-                    <p className="text-muted-foreground">150 sold</p>
                   </div>
                 </div>
               </CardContent>
@@ -302,94 +399,112 @@ export default function Home() {
         </div>
         <div className="mt-6 rounded-lg border bg-background p-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold">Sales, Expenses, and Revenue</h2>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
-                This Month
-              </Button>
-              <Button variant="outline" size="sm">
-                Last Month
-              </Button>
-              <Button variant="outline" size="sm">
-                YTD
-              </Button>
-            </div>
+            <h2 className="text-lg font-bold">Sales, Expenses, Profits</h2>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Button variant="outline" size="sm">
+                  {view} - {subView}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setView("This Month");
+                    setSubView("Day by Day");
+                  }}
+                >
+                  This Month - Day by Day
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setView("This Month");
+                    setSubView("Week by Week");
+                  }}
+                >
+                  This Month - Week by Week
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setView("Last Month")}>
+                  Last Month
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setView("YTD")}>
+                  YTD
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setDialogOpen(true)}>
+                  Custom Time Period
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
-          <div className="mt-4">
-            <LinechartChart className="aspect-[16/9]" />
+          <div className="mt-4 aspect-[16/9]">
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart
+                data={data}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey={
+                    view === "This Month" && subView === "Day by Day"
+                      ? "day"
+                      : view === "This Month" && subView === "Week by Week"
+                      ? "week"
+                      : "month"
+                  }
+                />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="sales" fill="#8884d8" />
+                <Bar dataKey="expenses" fill="#82ca9d" />
+                <Bar dataKey="profit" fill="#ffc658" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </main>
+      {/* Custom Time Period Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        {/*  <DialogTrigger asChild>
+           <Button>Open Custom Date Picker</Button>
+         </DialogTrigger> */}
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Custom Time Period</DialogTitle>
+            <DialogDescription>
+              Select a start and end date for the custom period.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-4">
+            <Calendar
+              mode="single"
+              selected={customDateRange?.start}
+              onSelect={(date) =>
+                setCustomDateRange((prev) => ({ ...prev, start: date }))
+              }
+              placeholder="Select start date"
+            />
+            <Calendar
+              mode="single"
+              selected={customDateRange?.end}
+              onSelect={(date) =>
+                setCustomDateRange((prev) => ({ ...prev, end: date }))
+              }
+              placeholder="Select end date"
+            />
+          </div>
+          <DialogFooter>
+            <Button onClick={handleCustomDateChange} className="ml-2">
+              Apply
+            </Button>
+            <Button onClick={() => setDialogOpen(false)} className="ml-2">
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
-  );
-}
-
-function LinechartChart(props) {
-  return (
-    <div {...props}>
-      <ChartContainer
-        config={{
-          desktop: {
-            label: "Desktop",
-            color: "hsl(var(--chart-1))",
-          },
-        }}
-      >
-        <LineChart
-          accessibilityLayer
-          data={[
-            { month: "January", desktop: 186 },
-            { month: "February", desktop: 305 },
-            { month: "March", desktop: 237 },
-            { month: "April", desktop: 73 },
-            { month: "May", desktop: 209 },
-            { month: "June", desktop: 214 },
-          ]}
-          margin={{
-            left: 12,
-            right: 12,
-          }}
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
-          <ChartTooltip
-            cursor={false}
-            content={<ChartTooltipContent hideLabel />}
-          />
-          <Line
-            dataKey="desktop"
-            type="natural"
-            stroke="var(--color-desktop)"
-            strokeWidth={2}
-            dot={false}
-          />
-        </LineChart>
-      </ChartContainer>
-    </div>
-  );
-}
-
-function MountainIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
   );
 }
