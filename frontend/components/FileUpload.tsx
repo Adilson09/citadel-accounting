@@ -1,56 +1,76 @@
-// components/FileUpload.tsx
-import { useState, ChangeEvent, FormEvent } from 'react';
-import { useMutation, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+"use client";
+import React, { useState, useCallback } from "react";
 
 interface FileUploadProps {
-  uploadRoute: string;
+  entityType: string;
+  entityId: number;
+  onUploadSuccess?: (filePath: string) => void;
+  onUploadError?: (error: string) => void;
+  className?: string;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ uploadRoute }) => {
-  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
+const FileUpload: React.FC<FileUploadProps> = ({
+  entityType,
+  entityId,
+  onUploadSuccess,
+  onUploadError,
+  className = "",
+}) => {
+  const [isUploading, setIsUploading] = useState(false);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedFiles(event.target.files);
-  };
+  const handleFileChange = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (!file) return;
 
-  const uploadFiles = async (files: FileList) => {
-    const formData = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      formData.append('files', files[i]);
-    }
-    const response = await fetch(`/upload?route=${uploadRoute}`, {
-      method: 'POST',
-      body: formData,
-    });
-    if (!response.ok) {
-      throw new Error('Failed to upload files');
-    }
-    return response.json();
-  };
+      setIsUploading(true);
 
-  const mutation = useMutation(uploadFiles, {
-    onSuccess: (data) => {
-      console.log(data);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetch(
+          `/api/files/upload/${entityType}/${entityId}/`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Upload failed");
+        }
+
+        const data = await response.json();
+        onUploadSuccess?.(data.file_path);
+      } catch (error) {
+        console.error("Upload error:", error);
+        onUploadError?.(
+          error instanceof Error ? error.message : "An unknown error occurred"
+        );
+      } finally {
+        setIsUploading(false);
+      }
     },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-
-  const handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    if (selectedFiles) {
-      mutation.mutate(selectedFiles);
-    }
-  };
+    [entityType, entityId, onUploadSuccess, onUploadError]
+  );
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="file" multiple onChange={handleFileChange} />
-      <button type="submit" disabled={mutation.isLoading}>
-        {mutation.isLoading ? 'Uploading...' : 'Upload'}
-      </button>
-    </form>
+    <div className={className}>
+      <input
+        type="file"
+        onChange={handleFileChange}
+        disabled={isUploading}
+        style={{ display: "none" }}
+        id={`file-upload-${entityType}-${entityId}`}
+      />
+      <label
+        htmlFor={`file-upload-${entityType}-${entityId}`}
+        className="btn btn-primary"
+      >
+        {isUploading ? "Uploading..." : "Upload File"}
+      </label>
+    </div>
   );
 };
 

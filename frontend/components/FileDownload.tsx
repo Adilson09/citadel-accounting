@@ -1,61 +1,81 @@
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 
-interface FileDownloadButtonProps {
-  fileId: number | string;
-  fileType: string;
+interface FileDownloadProps {
   entityType: string;
+  entityId: number;
+  fileName?: string;
   className?: string;
   buttonText?: string;
 }
 
-const FileDownloadButton: React.FC<FileDownloadButtonProps> = ({
-  fileId,
-  fileType,
+const FileDownload: React.FC<FileDownloadProps> = ({
   entityType,
-  className = '',
-  buttonText
+  entityId,
+  fileName,
+  className = "",
+  buttonText = "Download File",
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownload = async () => {
-    setIsLoading(true);
+    setIsDownloading(true);
+
     try {
-      const response = await fetch(`/api/download/${entityType}/${fileId}`, {
-        method: 'GET',
-      });
+      const response = await fetch(
+        `/api/files/download/${entityType}/${entityId}/`,
+        {
+          method: "GET",
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(`Failed to download ${entityType}`);
+        throw new Error("Download failed");
       }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
+      const a = document.createElement("a");
+      a.style.display = "none";
       a.href = url;
-      a.download = `${entityType}_${fileId}.${fileType}`;
+      a.download =
+        fileName ||
+        `${entityType}_${entityId}${getFileExtension(
+          response.headers.get("Content-Type")
+        )}`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error(`Error downloading ${entityType}:`, error);
-      alert(`Failed to download ${entityType}. Please try again.`);
+      console.error("Download error:", error);
+      alert("Failed to download file. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsDownloading(false);
     }
   };
 
-  const defaultButtonText = isLoading ? 'Downloading...' : `Download ${entityType}`;
+  const getFileExtension = (contentType: string | null): string => {
+    switch (contentType) {
+      case "application/pdf":
+        return ".pdf";
+      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        return ".xlsx";
+      case "text/csv":
+        return ".csv";
+      default:
+        return "";
+    }
+  };
 
   return (
     <button
       onClick={handleDownload}
-      disabled={isLoading}
-      className={className}
+      disabled={isDownloading}
+      className={`btn btn-primary ${className}`}
     >
-      {buttonText || defaultButtonText}
+      {isDownloading ? "Downloading..." : buttonText}
     </button>
   );
 };
 
-export default FileDownloadButton;
+export default FileDownload;

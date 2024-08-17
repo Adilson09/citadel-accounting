@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'payroll',
     'purchases',
     'sales',
+    'filemanagement',
 ]
 
 MIDDLEWARE = [

@@ -91,3 +91,58 @@ export async function getSales() {
     return { error: error };
   }
 }
+
+//download functionality
+import type { NextApiRequest, NextApiResponse } from "next";
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { entityType, id } = req.query;
+
+  try {
+    const response = await fetch(
+      `${process.env.DJANGO_API_URL}/${entityType}/${id}/download/`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.API_TOKEN}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${entityType} from backend`);
+    }
+
+    const fileBuffer = await response.arrayBuffer();
+    const contentType =
+      response.headers.get("Content-Type") || "application/octet-stream";
+
+    res.setHeader("Content-Type", contentType);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=${entityType}_${id}.${getFileExtension(
+        contentType
+      )}`
+    );
+    res.send(Buffer.from(fileBuffer));
+  } catch (error) {
+    console.error(`Error fetching ${entityType}:`, error);
+    res.status(500).json({ error: `Failed to download ${entityType}` });
+  }
+}
+
+function getFileExtension(contentType: string): string {
+  switch (contentType) {
+    case "application/pdf":
+      return "pdf";
+    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+      return "xlsx";
+    case "text/csv":
+      return "csv";
+    default:
+      return "bin";
+  }
+}

@@ -18,17 +18,48 @@ class CustomerDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
+# views.py
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from .models import Invoice, Purchase, Report, Sale
+from .utils import generate_file
 
-from reportlab.lib.pagesizes import letter
-from reportlab.pdfgen import canvas
-from django.http import HttpResponse
-
-def generate_pdf(request, invoice_id):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="invoice_{invoice_id}.pdf"'
-
-    c = canvas.Canvas(response, pagesize=letter)
-    c.drawString(100, 750, f"Invoice {invoice_id}")
-    # Add more drawing operations to generate the invoice content
-    c.save()
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def download_file(request, entity_type, entity_id):
+    model_map = {
+        'invoice': Invoice,
+        'purchase': Purchase,
+        'report': Report,
+        'sale': Sale,
+    }
+    
+    Model = model_map.get(entity_type.lower())
+    if not Model:
+        return Response({'error': 'Invalid entity type'}, status=400)
+    
+    entity = get_object_or_404(Model, id=entity_id)
+    
+    file_content, content_type = generate_file(entity_type, entity)
+    
+    response = FileResponse(file_content, content_type=content_type)
+    response['Content-Disposition'] = f'attachment; filename="{entity_type}_{entity_id}.{get_file_extension(content_type)}"'
     return response
+
+def get_file_extension(content_type):
+    extensions = {
+        'application/pdf': 'pdf',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+        'text/csv': 'csv',
+    }
+    return extensions.get(content_type, 'bin')
+
+# urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('<str:entity_type>/<int:entity_id>/download/', views.download_file, name='download_file'),
+]
