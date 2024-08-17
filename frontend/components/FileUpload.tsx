@@ -63,6 +63,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         disabled={isUploading}
         style={{ display: "none" }}
         id={`file-upload-${entityType}-${entityId}`}
+        className="hover:cursor-pointer"
       />
       <label
         htmlFor={`file-upload-${entityType}-${entityId}`}

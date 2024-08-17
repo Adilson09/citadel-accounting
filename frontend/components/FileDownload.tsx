@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { Button } from "./ui/button";
 
 interface FileDownloadProps {
   entityType: string;
@@ -68,13 +69,13 @@ const FileDownload: React.FC<FileDownloadProps> = ({
   };
 
   return (
-    <button
+    <Button
       onClick={handleDownload}
       disabled={isDownloading}
-      className={`btn btn-primary ${className}`}
+      className="bg-slate-500"
     >
       {isDownloading ? "Downloading..." : buttonText}
-    </button>
+    </Button>
   );
 };
 
