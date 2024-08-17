@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <header className="sticky gap-4 top-0 z-40 flex h-16 w-full items-center border-b bg-gray-300 px-4 sm:px-6">
       <div className="flex items-center gap-4">
-        <Link href="#" className="flex items-center gap-2" prefetch={false}>
+        <Link href="/" className="flex items-center gap-2" prefetch={false}>
           {/* Logo */}
           <span className="font-bold">Citadel</span>
         </Link>
