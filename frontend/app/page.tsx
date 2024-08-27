@@ -31,6 +31,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -132,7 +133,7 @@ export default function Home() {
               onClick={() => router.push("/inventory")}
               className="ml-4 py-2 px-4 rounded border text-primary"
             >
-              View All Items
+              {/* <Link href={inventory} >View All Items</Link> */}
             </Button>
           </div>
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

@@ -32,7 +32,7 @@ export default function LeftSideBar() {
 
   return (
     <Sheet>
-      <div className="min-h-screen static ">
+      <div className="hidden md:flex min-h-screen static ">
         <aside
           className={`fixed inset-y-0 left-0 z-10 flex ${
             isCollapsed ? "w-16" : "w-64"

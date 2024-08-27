@@ -14,6 +14,7 @@ import {
 import { ItemType } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import PaginationComponent from "@/components/PaginationComponent";
+import Link from "next/link";
 
 async function getItems(): Promise<ItemType[]> {
   const response = await fetch("http://127.0.0.1:8000/api/inventory/items/", {
@@ -90,7 +91,9 @@ export default function Inventory() {
     <div className="flex flex-col gap-4 p-4 md:p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Inventory Management</h1>
-        <Button size="sm">Add Item</Button>
+        <Button size="sm" variant="default">
+          <Link href="/inventory/newitem">Add Item</Link>
+        </Button>
       </div>
 
       <div className="relative">

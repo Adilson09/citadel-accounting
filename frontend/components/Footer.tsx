@@ -8,7 +8,7 @@ export default function Footer() {
       </p>
       <div className="sm:ml-auto flex gap-4 sm:gap-6">
         <Link
-          href="github.com"
+          href="/www.github.com"
           className="text-xs hover:underline underline-offset-4"
           prefetch={false}
           target="_blank"

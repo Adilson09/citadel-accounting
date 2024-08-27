@@ -110,7 +110,7 @@ export default function NewPurchase() {
     <>
       <Card className="w-full max-w-2xl">
         <CardHeader className="relative">
-          <CardTitle>New Purchase</CardTitle>
+          <CardTitle>New Item</CardTitle>
           <Button
             variant="outline"
             className="absolute top-2 right-2"
@@ -123,12 +123,12 @@ export default function NewPurchase() {
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="supplierName">Supplier Name</Label>
+                <Label htmlFor="itemName">item Name</Label>
                 <Input
-                  id="supplierName"
+                  id="itemName"
                   value={purchaseData.supplierName}
                   onChange={handleInputChange}
-                  placeholder="Enter supplier name"
+                  placeholder="Enter item name"
                 />
               </div>
               <div className="space-y-2">
