@@ -8,20 +8,13 @@ export default function Footer() {
       </p>
       <div className="sm:ml-auto flex gap-4 sm:gap-6">
         <Link
-          href="/www.github.com"
+          href="github.com/kellymweu/citadel-accounting"
           className="text-xs hover:underline underline-offset-4"
           prefetch={false}
           target="_blank"
         >
           Github
         </Link>
-        {/* <Link
-          href="#"
-          className="text-xs hover:underline underline-offset-4"
-          prefetch={false}
-        >
-          Privacy
-        </Link> */}
       </div>
     </footer>
   );
