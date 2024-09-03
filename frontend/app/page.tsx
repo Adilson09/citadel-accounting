@@ -173,6 +173,18 @@ export default function Home() {
                 </div>
               </CardContent>
             </Card>
+            <Card>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold">Item 4</h3>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-muted-foreground">79 sold</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
         <div className="mt-6 rounded-lg border bg-background p-6">
