@@ -5,11 +5,12 @@
 
 # class SaleItemSerializer(serializers.ModelSerializer):
 #     item_name = serializers.CharField(source='item.item_name', read_only=True)
+#     item_id = serializers.PrimaryKeyRelatedField(queryset=Item.objects.all(), source='item', write_only=True)
 
 #     class Meta:
 #         model = SaleItem
-#         fields = ['id', 'item', 'item_name', 'sale_quantity', 'selling_price', 'sub_total']
-#         read_only_fields = ['sub_total']
+#         fields = ['id', 'item_id', 'item_name', 'sale_quantity', 'selling_price', 'sub_total']
+#         read_only_fields = ['sub_total', 'item_name']
 
 #     def validate(self, data):
 #         item = data['item']
@@ -17,35 +18,23 @@
 #         if sale_quantity > item.quantity:
 #             raise serializers.ValidationError(f"Not enough stock for {item.item_name}. Available: {item.quantity}")
 #         return data
-    
-    
 
 # class SaleSerializer(serializers.ModelSerializer):
-#     saleitems = SaleItemSerializer(many=True, required=False)
+#     # saleitems = SaleItemSerializer(many=True)
+#     saleitems = serializers.ListField(child=SaleItemSerializer())
 #     customer_name = serializers.CharField(source='customer.name', read_only=True)
+#     customer_id = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all(), source='customer')
 
 #     class Meta:
 #         model = Sale
-#         fields = ['id', 'customer', 'customer_name', 'sale_date', 'tax_type', 'sub_total', 'tax_amount', 'total', 'saleitems']
+#         fields = ['id', 'customer_id', 'customer_name', 'sale_date', 'tax_type', 'sub_total', 'tax_amount', 'total', 'saleitems']
 #         read_only_fields = ['sub_total', 'tax_amount', 'total']
 
-#     # def create(self, validated_data):
-#     #     sale_items_data = validated_data.pop('saleitems', [])
-#     #     sale = Sale.objects.create(**validated_data)
-#     #     for item_data in sale_items_data:
-#     #         SaleItem.objects.create(sale=sale, **item_data)
-#     #     sale.save()  # This will trigger the recalculation of totals
-#     #     return sale
-    
 #     def create(self, validated_data):
-#         sale_items_data = validated_data.pop('saleitems', [])
+#         sale_items_data = validated_data.pop('saleitems')
 #         sale = Sale.objects.create(**validated_data)
 #         for item_data in sale_items_data:
-#             sale_item = SaleItem.objects.create(sale=sale, **item_data)
-#             # Update inventory
-#             item = sale_item.item
-#             item.quantity -= sale_item.sale_quantity
-#             item.save()
+#             SaleItem.objects.create(sale=sale, **item_data)
 #         sale.save()  # This will trigger the recalculation of totals
 #         return sale
 
@@ -110,7 +99,7 @@ class SaleItemSerializer(serializers.ModelSerializer):
         return data
 
 class SaleSerializer(serializers.ModelSerializer):
-    saleitems = SaleItemSerializer(many=True)
+    saleitems = SaleItemSerializer(many=True)  # Use nested serializers for handling sale items
     customer_name = serializers.CharField(source='customer.name', read_only=True)
     customer_id = serializers.PrimaryKeyRelatedField(queryset=Customer.objects.all(), source='customer')
 
@@ -120,15 +109,25 @@ class SaleSerializer(serializers.ModelSerializer):
         read_only_fields = ['sub_total', 'tax_amount', 'total']
 
     def create(self, validated_data):
+        # Remove saleitems from validated data and extract them separately
         sale_items_data = validated_data.pop('saleitems')
+        
+        # Create the sale instance first
         sale = Sale.objects.create(**validated_data)
+
+        # Now that sale has a primary key, create sale items
         for item_data in sale_items_data:
             SaleItem.objects.create(sale=sale, **item_data)
-        sale.save()  # This will trigger the recalculation of totals
+
+        # Optionally save again if there are calculations for total, tax, etc.
+        sale.save()  
         return sale
 
     def update(self, instance, validated_data):
+        # Extract sale items data
         sale_items_data = validated_data.pop('saleitems', [])
+        
+        # Update the Sale fields
         instance.customer = validated_data.get('customer', instance.customer)
         instance.sale_date = validated_data.get('sale_date', instance.sale_date)
         instance.tax_type = validated_data.get('tax_type', instance.tax_type)
@@ -138,16 +137,18 @@ class SaleSerializer(serializers.ModelSerializer):
         for item_data in sale_items_data:
             item_id = item_data.get('id')
             if item_id:
+                # Update existing sale item
                 item = existing_items.pop(item_id, None)
                 if item:
                     # Restore previous quantity before updating
                     item.item.quantity += item.sale_quantity
                     item.item.save()
-                    
+
                     for attr, value in item_data.items():
                         setattr(item, attr, value)
                     item.save()
             else:
+                # Create new sale item
                 SaleItem.objects.create(sale=instance, **item_data)
 
         # Delete removed items
@@ -157,7 +158,8 @@ class SaleSerializer(serializers.ModelSerializer):
             item.item.save()
             item.delete()
 
-        instance.save()  # This will trigger the recalculation of totals
+        # Save the sale instance after updates
+        instance.save()
         return instance
 
     def validate(self, data):
