@@ -97,7 +97,7 @@ export default function RootLayout({
             <div className="flex flex-col min-h-screen">
               <Header />
               <div className="flex gap-0">
-                <LeftSideBar />
+                {/* <LeftSideBar /> */}
                 {children}
               </div>
               <Footer />

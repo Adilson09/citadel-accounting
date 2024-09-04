@@ -103,7 +103,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background w-full">
+    <div className="flex min-h-screen flex-col bg-background w-full pl-4">
       <main className="flex-1 py-6 sm:px-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Button

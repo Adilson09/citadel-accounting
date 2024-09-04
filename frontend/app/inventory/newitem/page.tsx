@@ -123,7 +123,7 @@ export default function NewPurchase() {
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="itemName">item Name</Label>
+                <Label htmlFor="itemName">Item Name</Label>
                 <Input
                   id="itemName"
                   value={purchaseData.supplierName}
@@ -216,19 +216,24 @@ export default function NewPurchase() {
       </Card>
 
       <AlertDialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-slate-100">
           <AlertDialogHeader>
             <AlertDialogTitle>Confirm Cancellation</AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
-            Are you sure you want to cancel this purchase? Any unsaved changes
-            will be lost.
+            Are you sure you want to cancel? Any unsaved changes will be lost.
           </AlertDialogDescription>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={closeDialog}>
+            <AlertDialogCancel
+              onClick={closeDialog}
+              className="border-green-400 text-green-700"
+            >
               No, Go Back
             </AlertDialogCancel>
-            <AlertDialogAction onClick={confirmCancel}>
+            <AlertDialogAction
+              onClick={confirmCancel}
+              className="border-red-700 text-red-700"
+            >
               Yes, Cancel
             </AlertDialogAction>
           </AlertDialogFooter>
