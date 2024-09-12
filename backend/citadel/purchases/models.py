@@ -1,7 +1,6 @@
 from django.db import models
 from inventory.models import Item
 from django.utils import timezone
-from banking.models import Cheque
 
 class Supplier(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -33,8 +32,7 @@ class Purchase(models.Model):
     invoice_number = models.CharField(max_length=100, unique=True)
     tax_type = models.CharField(max_length=20, choices=TAX_TYPES)
     sub_total = models.DecimalField(max_digits=10, decimal_places=2, editable=False, default=0.00)
-    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS)
-    cheque = models.ForeignKey(Cheque, on_delete=models.SET_NULL, null=True, blank=True)  # Link to cheque
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS, default='CASH')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

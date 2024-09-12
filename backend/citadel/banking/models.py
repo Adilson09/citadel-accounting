@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime, timedelta
 from django.core.exceptions import ValidationError
-from purchases.models import Purchase
 
 class BankAccount(models.Model):
     ACCOUNT_TYPES = [
@@ -33,10 +32,10 @@ class BankAccount(models.Model):
     account_number = models.CharField(max_length=50, unique=True)
     account_type = models.CharField(max_length=10, choices=ACCOUNT_TYPES)
     balance = models.DecimalField(max_digits=15, decimal_places=2)
-    cheque_book_issued = models.BooleanField(default=False)  # Checkbox to issue cheque book
-    cheque_leaves_remaining = models.PositiveIntegerField(default=0, blank=True, null=True)  # Default value of 0
-    currency = models.CharField(max_length=3, choices=CURRENCIES, default='KES')  # Default currency is KES
-    bank = models.CharField(max_length=10, choices=BANKS)  # Bank selection
+    cheque_book_issued = models.BooleanField(default=False)
+    cheque_leaves_remaining = models.PositiveIntegerField(default=0, blank=True, null=True)
+    currency = models.CharField(max_length=3, choices=CURRENCIES, default='KES')
+    bank = models.CharField(max_length=10, choices=BANKS)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -44,18 +43,16 @@ class BankAccount(models.Model):
         return f"{self.account_name} - {self.account_number} ({self.get_currency_display()} at {self.get_bank_display()})"
 
     def clean(self):
-        """Custom validation to ensure cheque leaves are set only if cheque_book_issued is True."""
         if self.cheque_book_issued and (self.cheque_leaves_remaining is None or self.cheque_leaves_remaining <= 0):
             raise ValidationError("You must specify the number of cheque leaves remaining if a cheque book is issued.")
         if not self.cheque_book_issued:
-            self.cheque_leaves_remaining = 0  # Reset if no cheque book is issued
+            self.cheque_leaves_remaining = 0
 
     def issue_cheque_book(self, size):
-        """Issue a new cheque book with a specific number of leaves."""
         if self.account_type == 'CURRENT':
             if not self.cheque_book_issued or self.cheque_leaves_remaining == 0:
                 self.cheque_book_issued = True
-                self.cheque_leaves_remaining = size  # Assign cheque book size
+                self.cheque_leaves_remaining = size
                 self.save()
             else:
                 raise ValueError("A cheque book is already active.")
@@ -63,7 +60,6 @@ class BankAccount(models.Model):
             raise ValueError("Cheque books can only be issued for current accounts.")
 
     def use_cheque_leaf(self):
-        """Track the use of a cheque leaf."""
         if self.cheque_leaves_remaining > 0:
             self.cheque_leaves_remaining -= 1
             self.save()
@@ -78,60 +74,54 @@ class Cheque(models.Model):
         ('CANCELLED', 'Cancelled'),
         ('STALE', 'Stale'),
     ]
-    
-    bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name="cheques")
+
+    bank_account = models.ForeignKey(
+        BankAccount, 
+        on_delete=models.CASCADE, 
+        related_name="cheques"
+    )
     cheque_number = models.CharField(max_length=20, unique=True)
     issued_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=CHEQUE_STATUSES, default='PENDING')
-    purchase = models.OneToOneField('purchases.Purchase', on_delete=models.SET_NULL, null=True, blank=True, related_name='cheque')
+    purchase = models.OneToOneField(
+        'purchases.Purchase', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='cheque'  # This should be unique and not conflict with other fields
+    )
 
     def __str__(self):
         return f"Cheque {self.cheque_number} for {self.bank_account.account_name}"
 
     def update_status(self, new_status):
-        """Update the status of the cheque and handle related logic."""
         if new_status not in dict(self.CHEQUE_STATUSES).keys():
             raise ValueError("Invalid status.")
-        
-        # Handle status updates
+
         if self.status == 'PENDING' and new_status in ['CLEARED', 'BOUNCED', 'CANCELLED', 'STALE']:
-            if new_status == 'CLEARED':
-                # Handle logic for a cleared cheque
-                pass
-            elif new_status == 'BOUNCED':
-                # Handle logic for a bounced cheque
-                pass
-            elif new_status == 'CANCELLED':
-                # Handle logic for a cancelled cheque
-                pass
-            elif new_status == 'STALE':
-                # Handle logic for a stale cheque
-                pass
-            
             self.status = new_status
             self.save()
 
     def cash_cheque(self):
-        """Mark the cheque as cashed and reduce the number of leaves remaining."""
         if self.status == 'PENDING':
-            self.status = 'CLEARED'  # Optionally mark as cleared when cashed
+            self.status = 'CLEARED'
             self.save()
         else:
             raise ValueError("This cheque cannot be cashed.")
 
     def is_stale(self):
-        """Determine if the cheque is stale (not cashed within 6 months)."""
         six_months_ago = datetime.now() - timedelta(days=180)
         return self.issued_date < six_months_ago and self.status == 'PENDING'
+
 
 class MpesaAccount(models.Model):
     MPESA_ACCOUNT_TYPES = [
         ('PERSONAL', 'Personal Phone Number'),
         ('TILL', 'Mpesa Till'),
     ]
-    
+
     account_name = models.CharField(max_length=50)
-    mpesa_number = models.CharField(max_length=20, unique=True)  # Phone number or Till number
+    mpesa_number = models.CharField(max_length=20, unique=True)
     account_type = models.CharField(max_length=10, choices=MPESA_ACCOUNT_TYPES)
     balance = models.DecimalField(max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -141,12 +131,10 @@ class MpesaAccount(models.Model):
         return f"{self.account_name} - {self.mpesa_number}"
 
     def credit(self, amount):
-        """Add funds to Mpesa account (Credit)"""
         self.balance += amount
         self.save()
 
     def debit(self, amount):
-        """Deduct funds from Mpesa account (Debit)"""
         if self.balance >= amount:
             self.balance -= amount
             self.save()
@@ -159,7 +147,7 @@ class Transaction(models.Model):
         ('CREDIT', 'Credit'),
         ('DEBIT', 'Debit'),
     ]
-    
+
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPES)
     bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, null=True, blank=True)
     mpesa_account = models.ForeignKey(MpesaAccount, on_delete=models.CASCADE, null=True, blank=True)
@@ -168,14 +156,12 @@ class Transaction(models.Model):
     description = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        # Handle bank account transactions
         if self.bank_account:
             if self.transaction_type == 'CREDIT':
                 self.bank_account.deposit(self.amount)
             elif self.transaction_type == 'DEBIT':
                 self.bank_account.withdraw(self.amount)
 
-        # Handle Mpesa account transactions
         if self.mpesa_account:
             if self.transaction_type == 'CREDIT':
                 self.mpesa_account.credit(self.amount)
@@ -193,7 +179,7 @@ class Transfer(models.Model):
         ('EFT', 'Electronic Funds Transfer'),
         ('RTGS', 'Real Time Gross Settlement'),
     ]
-    
+
     TRANSFER_DESTINATIONS = [
         ('INTRABANK', 'Within Same Bank'),
         ('INTERBANK', 'To Other Bank'),
