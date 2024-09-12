@@ -1,6 +1,7 @@
 from django.db import models
 from inventory.models import Item
 from django.utils import timezone
+from banking.models import Cheque
 
 class Supplier(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -21,16 +22,27 @@ class Purchase(models.Model):
         ("14% VAT", "14% VAT"),
     ]
 
+    PAYMENT_METHODS = [
+        ('CHEQUE', 'Cheque'),
+        ('MPESA', 'Mpesa'),
+        ('CASH', 'Cash'),
+    ]
+
     supplier_name = models.CharField(max_length=100)
     purchase_date = models.DateField(default=timezone.now)
-    invoice_number = models.CharField(max_length=100, unique=True)  # Ensuring unique invoice numbers
+    invoice_number = models.CharField(max_length=100, unique=True)
     tax_type = models.CharField(max_length=20, choices=TAX_TYPES)
-    sub_total = models.DecimalField(max_digits=10, decimal_places=2, editable=False, default=0.00)  # Calculated field
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, editable=False, default=0.00)
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS)
+    cheque = models.ForeignKey(Cheque, on_delete=models.SET_NULL, null=True, blank=True)  # Link to cheque
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         self.sub_total = sum(item.sub_total for item in self.purchaseitem_set.all())
+        if self.payment_method == 'CHEQUE' and not self.cheque:
+            # Ensure that cheque details are provided when payment method is cheque
+            raise ValueError("Cheque must be provided when payment method is 'CHEQUE'.")
         super().save(*args, **kwargs)
 
     def __str__(self):

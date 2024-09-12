@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime, timedelta
+from django.core.exceptions import ValidationError
+from purchases.models import Purchase
 
 class BankAccount(models.Model):
     ACCOUNT_TYPES = [
@@ -22,17 +24,17 @@ class BankAccount(models.Model):
         ('COOP', 'Co-operative Bank'),
         ('I&M', 'I&M Bank'),
         ('SIDIAN', 'SIDIAN Bank'),
-('FAMILY', 'FAMILY Bank'),
-('HFC', 'HFC Bank'),
-('STANCHART', 'STANCHART Bank'),
-           ]
+        ('FAMILY', 'FAMILY Bank'),
+        ('HFC', 'HFC Bank'),
+        ('STANCHART', 'STANCHART Bank'),
+    ]
 
     account_name = models.CharField(max_length=50)
     account_number = models.CharField(max_length=50, unique=True)
     account_type = models.CharField(max_length=10, choices=ACCOUNT_TYPES)
     balance = models.DecimalField(max_digits=15, decimal_places=2)
-    cheque_book_issued = models.BooleanField(default=False)
-    cheque_leaves_remaining = models.PositiveIntegerField(default=0)  # Tracks remaining cheque leaves
+    cheque_book_issued = models.BooleanField(default=False)  # Checkbox to issue cheque book
+    cheque_leaves_remaining = models.PositiveIntegerField(default=0, blank=True, null=True)  # Default value of 0
     currency = models.CharField(max_length=3, choices=CURRENCIES, default='KES')  # Default currency is KES
     bank = models.CharField(max_length=10, choices=BANKS)  # Bank selection
     created_at = models.DateTimeField(auto_now_add=True)
@@ -40,6 +42,13 @@ class BankAccount(models.Model):
 
     def __str__(self):
         return f"{self.account_name} - {self.account_number} ({self.get_currency_display()} at {self.get_bank_display()})"
+
+    def clean(self):
+        """Custom validation to ensure cheque leaves are set only if cheque_book_issued is True."""
+        if self.cheque_book_issued and (self.cheque_leaves_remaining is None or self.cheque_leaves_remaining <= 0):
+            raise ValidationError("You must specify the number of cheque leaves remaining if a cheque book is issued.")
+        if not self.cheque_book_issued:
+            self.cheque_leaves_remaining = 0  # Reset if no cheque book is issued
 
     def issue_cheque_book(self, size):
         """Issue a new cheque book with a specific number of leaves."""
@@ -74,7 +83,8 @@ class Cheque(models.Model):
     cheque_number = models.CharField(max_length=20, unique=True)
     issued_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=CHEQUE_STATUSES, default='PENDING')
-    
+    purchase = models.OneToOneField('purchases.Purchase', on_delete=models.SET_NULL, null=True, blank=True, related_name='cheque')
+
     def __str__(self):
         return f"Cheque {self.cheque_number} for {self.bank_account.account_name}"
 
