@@ -22,56 +22,18 @@ import { Badge } from "@/components/ui/badge";
 export default function Payments() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState({ key: "date", order: "desc" });
+
   const payments = [
-    {
-      id: 1,
-      amount: 1500.0,
-      date: "2023-06-01",
-      method: "card",
-    },
-    {
-      id: 2,
-      amount: 500.0,
-      date: "2023-05-15",
-      method: "cash",
-    },
-    {
-      id: 3,
-      amount: 2000.0,
-      date: "2023-04-30",
-      method: "transfer",
-    },
-    {
-      id: 4,
-      amount: 750.0,
-      date: "2023-04-20",
-      method: "cheque",
-    },
-    {
-      id: 5,
-      amount: 1200.0,
-      date: "2023-03-25",
-      method: "card",
-    },
-    {
-      id: 6,
-      amount: 300.0,
-      date: "2023-03-10",
-      method: "cash",
-    },
-    {
-      id: 7,
-      amount: 1800.0,
-      date: "2023-02-28",
-      method: "transfer",
-    },
-    {
-      id: 8,
-      amount: 400.0,
-      date: "2023-02-15",
-      method: "cheque",
-    },
+    { id: 1, amount: 1500.0, date: "2023-06-01", method: "card" },
+    { id: 2, amount: 500.0, date: "2023-05-15", method: "cash" },
+    { id: 3, amount: 2000.0, date: "2023-04-30", method: "transfer" },
+    { id: 4, amount: 750.0, date: "2023-04-20", method: "cheque" },
+    { id: 5, amount: 1200.0, date: "2023-03-25", method: "card" },
+    { id: 6, amount: 300.0, date: "2023-03-10", method: "cash" },
+    { id: 7, amount: 1800.0, date: "2023-02-28", method: "transfer" },
+    { id: 8, amount: 400.0, date: "2023-02-15", method: "cheque" },
   ];
+
   const filteredPayments = useMemo(() => {
     return payments
       .filter(
@@ -88,6 +50,7 @@ export default function Payments() {
         }
       });
   }, [search, sort]);
+
   const handleSort = (key) => {
     if (sort.key === key) {
       setSort({ key, order: sort.order === "asc" ? "desc" : "asc" });
@@ -95,6 +58,7 @@ export default function Payments() {
       setSort({ key, order: "asc" });
     }
   };
+
   const getPaymentBadgeColor = (method) => {
     switch (method) {
       case "cash":
@@ -109,17 +73,18 @@ export default function Payments() {
         return "bg-gray-300 text-gray-800";
     }
   };
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
         <h1 className="text-2xl font-bold">Payments</h1>
-        <div className="flex items-center">
+        <div className="mt-4 md:mt-0 flex flex-col sm:flex-row sm:items-center">
           <Input
             type="text"
             placeholder="Search payments..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="mr-4 w-full max-w-md rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
+            className="mb-4 sm:mb-0 sm:mr-4 w-full max-w-md rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -134,12 +99,8 @@ export default function Payments() {
                 onValueChange={(key) => handleSort(key)}
               >
                 <DropdownMenuRadioItem value="date">Date</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="amount">
-                  Amount
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="method">
-                  Payment Method
-                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="amount">Amount</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="method">Payment Method</DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -149,37 +110,22 @@ export default function Payments() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort("date")}
-              >
+              <TableHead className="cursor-pointer" onClick={() => handleSort("date")}>
                 Date
                 {sort.key === "date" && (
-                  <span className="ml-2">
-                    {sort.order === "asc" ? "\u2191" : "\u2193"}
-                  </span>
+                  <span className="ml-2">{sort.order === "asc" ? "\u2191" : "\u2193"}</span>
                 )}
               </TableHead>
-              <TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort("amount")}
-              >
+              <TableHead className="cursor-pointer" onClick={() => handleSort("amount")}>
                 Amount
                 {sort.key === "amount" && (
-                  <span className="ml-2">
-                    {sort.order === "asc" ? "\u2191" : "\u2193"}
-                  </span>
+                  <span className="ml-2">{sort.order === "asc" ? "\u2191" : "\u2193"}</span>
                 )}
               </TableHead>
-              <TableHead
-                className="cursor-pointer"
-                onClick={() => handleSort("method")}
-              >
+              <TableHead className="cursor-pointer" onClick={() => handleSort("method")}>
                 Payment Method
                 {sort.key === "method" && (
-                  <span className="ml-2">
-                    {sort.order === "asc" ? "\u2191" : "\u2193"}
-                  </span>
+                  <span className="ml-2">{sort.order === "asc" ? "\u2191" : "\u2193"}</span>
                 )}
               </TableHead>
             </TableRow>

@@ -5,11 +5,11 @@ export default function Expense() {
   return (
     <div className="px-4 py-6 md:px-6 md:py-12 lg:py-16">
       <div className="prose prose-gray mx-auto max-w-6xl dark:prose-invert">
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
+        <div className="flex flex-col-reverse md:flex-row items-center justify-between">
+          <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl lg:leading-[3.5rem] text-center md:text-left">
             Business Trip Expenses
           </h1>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mb-4 md:mb-0">
             <Button variant="outline" size="sm">
               <DownloadIcon className="h-4 w-4 mr-2" />
               Export
@@ -20,7 +20,7 @@ export default function Expense() {
             </Button>
           </div>
         </div>
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-4">
             <div className="grid gap-1">
               <div className="text-sm font-medium text-muted-foreground">
@@ -55,27 +55,27 @@ export default function Expense() {
               <div className="text-sm font-medium text-muted-foreground">
                 Receipts
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <Image
                   src="/placeholder.svg"
                   alt="Receipt 1"
                   width={200}
                   height={200}
-                  className="aspect-square rounded-md object-cover"
+                  className="aspect-square rounded-md object-cover w-full"
                 />
                 <Image
                   src="/placeholder.svg"
                   alt="Receipt 2"
                   width={200}
                   height={200}
-                  className="aspect-square rounded-md object-cover"
+                  className="aspect-square rounded-md object-cover w-full"
                 />
                 <Image
                   src="/placeholder.svg"
                   alt="Receipt 3"
                   width={200}
                   height={200}
-                  className="aspect-square rounded-md object-cover"
+                  className="aspect-square rounded-md object-cover w-full"
                 />
               </div>
             </div>
@@ -83,14 +83,18 @@ export default function Expense() {
               <div className="text-sm font-medium text-muted-foreground">
                 Attachments
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="flex flex-col items-center gap-2 rounded-md border bg-muted/20 p-4">
                   <FileIcon className="h-8 w-8 text-muted-foreground" />
-                  <div className="text-sm font-medium">Expense Report.pdf</div>
+                  <div className="text-sm font-medium text-center">
+                    Expense Report.pdf
+                  </div>
                 </div>
                 <div className="flex flex-col items-center gap-2 rounded-md border bg-muted/20 p-4">
                   <FileIcon className="h-8 w-8 text-muted-foreground" />
-                  <div className="text-sm font-medium">Itinerary.docx</div>
+                  <div className="text-sm font-medium text-center">
+                    Itinerary.docx
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,8 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/GvWTrEVeoNq
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 "use client";
 
 import { useState } from "react";
@@ -95,13 +90,16 @@ export default function Payroll() {
   ]);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [paymentAmount, setPaymentAmount] = useState(0);
+
   const handleAddEmployee = () => {
     setEmployees([...employees, { ...newEmployee, id: employees.length + 1 }]);
     setNewEmployee({ name: "", title: "", salary: 0, status: "Active" });
   };
+
   const handleEditEmployee = (employee) => {
     setEditingEmployee(employee);
   };
+
   const handleSaveEmployee = () => {
     setEmployees(
       employees.map((emp) =>
@@ -110,27 +108,32 @@ export default function Payroll() {
     );
     setEditingEmployee(null);
   };
-  const handleDeleteEmployee = (id: any) => {
+
+  const handleDeleteEmployee = (id) => {
     setEmployees(employees.filter((emp) => emp.id !== id));
   };
+
   const handleMakePayment = () => {
     console.log(`Payment method: ${paymentMethod}, Amount: ${paymentAmount}`);
     setPaymentMethod("");
     setPaymentAmount(0);
   };
+
   const totalEmployees = employees.length;
   const totalPayroll = employees.reduce((total, emp) => total + emp.salary, 0);
   const averageSalary = totalPayroll / totalEmployees;
+
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-6">Payroll Management</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className=" rounded-lg shadow-md p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Employee Records Section */}
+        <div className="rounded-lg shadow-md p-4 sm:p-6">
           <h2 className="text-xl font-bold mb-4">Employee Records</h2>
           <div className="overflow-x-auto">
-            <table className="w-full table-auto">
+            <table className="w-full table-auto border-collapse">
               <thead>
-                <tr className="bg-gray-500">
+                <tr className="bg-gray-500 text-white">
                   <th className="px-4 py-2 text-left">Name</th>
                   <th className="px-4 py-2 text-left">Job Title</th>
                   <th className="px-4 py-2 text-right">Salary</th>
@@ -145,7 +148,7 @@ export default function Payroll() {
                     className={`border-b ${
                       editingEmployee?.id === employee.id
                         ? "bg-gray-100"
-                        : "hover:bg-gray-400"
+                        : "hover:bg-gray-200"
                     }`}
                   >
                     <td className="px-4 py-2">
@@ -200,7 +203,7 @@ export default function Payroll() {
                       {editingEmployee?.id === employee.id ? (
                         <Select
                           value={editingEmployee.status}
-                          onValueChange={(e) =>
+                          onChange={(e) =>
                             setEditingEmployee({
                               ...editingEmployee,
                               status: e.target.value,
@@ -259,7 +262,9 @@ export default function Payroll() {
             </table>
           </div>
         </div>
-        <div className="rounded-lg shadow-md p-6">
+
+        {/* Add New Employee Section */}
+        <div className="rounded-lg shadow-md p-4 sm:p-6">
           <h2 className="text-xl font-bold mb-4">Add New Employee</h2>
           <div className="grid gap-4">
             <div>
@@ -303,7 +308,7 @@ export default function Payroll() {
               <Select
                 id="status"
                 value={newEmployee.status}
-                onValueChange={(e) =>
+                onChange={(e) =>
                   setNewEmployee({ ...newEmployee, status: e.target.value })
                 }
               >
@@ -317,7 +322,9 @@ export default function Payroll() {
           </div>
         </div>
       </div>
-      <div className="rounded-lg shadow-md p-6 mt-6">
+
+      {/* Payroll Summary Section */}
+      <div className="rounded-lg shadow-md p-4 sm:p-6 mt-6">
         <h2 className="text-xl font-bold mb-4">Payroll Summary</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
@@ -338,12 +345,14 @@ export default function Payroll() {
           </div>
         </div>
       </div>
-      <div className="rounded-lg shadow-md p-6 mt-6">
+
+      {/* Monthly Payroll Reports Section */}
+      <div className="rounded-lg shadow-md p-4 sm:p-6 mt-6">
         <h2 className="text-xl font-bold mb-4">Monthly Payroll Reports</h2>
         <div className="overflow-x-auto">
-          <table className="w-full table-auto">
+          <table className="w-full table-auto border-collapse">
             <thead>
-              <tr>
+              <tr className="bg-gray-500 text-white">
                 <th className="px-4 py-2 text-left">Month</th>
                 <th className="px-4 py-2 text-right">Total Payroll</th>
                 <th className="px-4 py-2 text-right">Average Salary</th>
@@ -365,7 +374,9 @@ export default function Payroll() {
           </table>
         </div>
       </div>
-      <div className="rounded-lg shadow-md p-6 mt-6">
+
+      {/* Make Payment Section */}
+      <div className="rounded-lg shadow-md p-4 sm:p-6 mt-6">
         <h2 className="text-xl font-bold mb-4">Make Payment</h2>
         <div className="grid gap-4">
           <div>
@@ -373,7 +384,7 @@ export default function Payroll() {
             <Select
               id="payment-method"
               value={paymentMethod}
-              onValueChange={(e) => setPaymentMethod(e.target.value)}
+              onChange={(e) => setPaymentMethod(e.target.value)}
             >
               <option value="">Select payment method</option>
               <option value="credit-card">Credit Card</option>

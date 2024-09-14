@@ -30,7 +30,10 @@ import Image from "next/image";
 export default function Settings() {
   return (
     <div className="flex flex-col w-full min-h-screen">
-      {/* <header className="flex items-center h-16 px-4 border-b shrink-0 md:px-6">
+      {/* Header section */}
+      {/* Uncomment if needed */}
+      {/* 
+      <header className="flex items-center h-16 px-4 border-b shrink-0 md:px-6">
         <Link
           href="#"
           className="flex items-center gap-2 text-lg font-semibold sm:text-base mr-4"
@@ -69,217 +72,236 @@ export default function Settings() {
             <span className="sr-only">Toggle user menu</span>
           </Button>
         </div>
-      </header> */}
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] bg-muted/40 flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
-        <div className="max-w-6xl w-full mx-auto grid gap-2">
-          <h1 className="font-semibold text-3xl">Settings</h1>
-        </div>
-        <div className="grid md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr] items-start gap-6 max-w-6xl w-full mx-auto">
-          <nav className="text-sm text-muted-foreground grid gap-4">
-            <Link
-              href="settings/company"
-              className="font-semibold text-primary"
-              prefetch={false}
-            >
-              Company
-            </Link>
-            <Link
-              href="/settings/ChartOfAccounts"
-              className="font-semibold"
-              prefetch={false}
-            >
-              Chart of Accounts
-            </Link>
-            <Link href="#" className="font-semibold" prefetch={false}>
-              User Permissions
-            </Link>
-            <Link href="#" className="font-semibold" prefetch={false}>
-              Date Formats
-            </Link>
-            <Link href="#" className="font-semibold" prefetch={false}>
-              Other Settings
-            </Link>
-          </nav>
-          <div className="grid gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Company Logo</CardTitle>
-                <CardDescription>
-                  Upload and preview your company logo.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <Image
-                    src="/placeholder.svg"
-                    width="100"
-                    height="100"
-                    alt="Company Logo"
-                    className="rounded-full"
-                    style={{ aspectRatio: "100/100", objectFit: "cover" }}
-                  />
-                  <div className="flex gap-2">
-                    <Button variant="outline">Upload Logo</Button>
-                    <Button variant="outline">Remove Logo</Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Chart of Accounts</CardTitle>
-                <CardDescription>
-                  View and edit your chart of accounts.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="relative w-full overflow-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Account</TableHead>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Balance</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell className="font-medium">Cash</TableCell>
-                        <TableCell>Asset</TableCell>
-                        <TableCell>$10,000.00</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="outline" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">
-                          Accounts Receivable
-                        </TableCell>
-                        <TableCell>Asset</TableCell>
-                        <TableCell>$25,000.00</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="outline" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">
-                          Accounts Payable
-                        </TableCell>
-                        <TableCell>Liability</TableCell>
-                        <TableCell>$15,000.00</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="outline" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-              <CardFooter className="border-t p-6">
-                <Button>Add Account</Button>
-              </CardFooter>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>User Permissions</CardTitle>
-                <CardDescription>
-                  Manage user roles and permissions.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="relative w-full overflow-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>User</TableHead>
-                        <TableHead>Role</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell className="font-medium">John Doe</TableCell>
-                        <TableCell>Admin</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="outline" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">
-                          Jane Smith
-                        </TableCell>
-                        <TableCell>Accountant</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="outline" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">
-                          Bob Johnson
-                        </TableCell>
-                        <TableCell>User</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="outline" size="sm">
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-              <CardFooter className="border-t p-6">
-                <Button>Add User</Button>
-              </CardFooter>
-            </Card>
+      </header>
+      */}
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Other Settings</CardTitle>
-                <CardDescription>
-                  Manage miscellaneous settings.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="email-notifications">
-                      Email Notifications
-                    </Label>
-                    <Checkbox id="email-notifications" defaultChecked>
-                      Receive email notifications
-                    </Checkbox>
+      <main className="flex flex-1 bg-muted/40 p-4 md:p-8">
+        <div className="max-w-6xl w-full mx-auto">
+          <h1 className="font-semibold text-3xl mb-6">Settings</h1>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <nav className="text-sm text-muted-foreground md:col-span-1">
+              <ul className="space-y-4">
+                <li>
+                  <Link
+                    href="/settings/company"
+                    className="font-semibold text-primary"
+                    prefetch={false}
+                  >
+                    Company
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/settings/ChartOfAccounts"
+                    className="font-semibold"
+                    prefetch={false}
+                  >
+                    Chart of Accounts
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="font-semibold" prefetch={false}>
+                    User Permissions
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="font-semibold" prefetch={false}>
+                    Date Formats
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="font-semibold" prefetch={false}>
+                    Other Settings
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+
+            <div className="md:col-span-3 space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Company Logo</CardTitle>
+                  <CardDescription>
+                    Upload and preview your company logo.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col items-center gap-4">
+                    <Image
+                      src="/placeholder.svg"
+                      width="100"
+                      height="100"
+                      alt="Company Logo"
+                      className="rounded-full"
+                      style={{ aspectRatio: "100/100", objectFit: "cover" }}
+                    />
+                    <div className="flex gap-2">
+                      <Button variant="outline">Upload Logo</Button>
+                      <Button variant="outline">Remove Logo</Button>
+                    </div>
                   </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="backup-schedule">Backup Schedule</Label>
-                    <Select id="backup-schedule">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select backup schedule" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="daily">Daily</SelectItem>
-                        <SelectItem value="weekly">Weekly</SelectItem>
-                        <SelectItem value="monthly">Monthly</SelectItem>
-                      </SelectContent>
-                    </Select>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Chart of Accounts</CardTitle>
+                  <CardDescription>
+                    View and edit your chart of accounts.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative w-full overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Account</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Balance</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium">Cash</TableCell>
+                          <TableCell>Asset</TableCell>
+                          <TableCell>$10,000.00</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" size="sm">
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Accounts Receivable
+                          </TableCell>
+                          <TableCell>Asset</TableCell>
+                          <TableCell>$25,000.00</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" size="sm">
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Accounts Payable
+                          </TableCell>
+                          <TableCell>Liability</TableCell>
+                          <TableCell>$15,000.00</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" size="sm">
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
                   </div>
-                </div>
-              </CardContent>
-              <CardFooter className="border-t p-6">
-                <Button>Save Changes</Button>
-              </CardFooter>
-            </Card>
+                </CardContent>
+                <CardFooter className="border-t p-6">
+                  <Button>Add Account</Button>
+                </CardFooter>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>User Permissions</CardTitle>
+                  <CardDescription>
+                    Manage user roles and permissions.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative w-full overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>User</TableHead>
+                          <TableHead>Role</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            John Doe
+                          </TableCell>
+                          <TableCell>Admin</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" size="sm">
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Jane Smith
+                          </TableCell>
+                          <TableCell>Accountant</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" size="sm">
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell className="font-medium">
+                            Bob Johnson
+                          </TableCell>
+                          <TableCell>User</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="outline" size="sm">
+                              Edit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+                <CardFooter className="border-t p-6">
+                  <Button>Add User</Button>
+                </CardFooter>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Other Settings</CardTitle>
+                  <CardDescription>
+                    Manage miscellaneous settings.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="email-notifications">
+                        Email Notifications
+                      </Label>
+                      <Checkbox id="email-notifications" defaultChecked>
+                        Receive email notifications
+                      </Checkbox>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="backup-schedule">Backup Schedule</Label>
+                      <Select id="backup-schedule">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select backup schedule" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="daily">Daily</SelectItem>
+                          <SelectItem value="weekly">Weekly</SelectItem>
+                          <SelectItem value="monthly">Monthly</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="border-t p-6">
+                  <Button>Save Changes</Button>
+                </CardFooter>
+              </Card>
+            </div>
           </div>
         </div>
       </main>

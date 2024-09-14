@@ -7,7 +7,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 
-export default function Component() {
+export default function Liabilities() {
   return (
     <div className="container mx-auto py-8">
       <div className="mb-6">
@@ -31,36 +31,52 @@ export default function Component() {
               </TableHead>
             </TableRow>
           </TableHeader>
-          <tbody>
-            <tr>
-              <td className="border-b px-4 py-3">Loan</td>
-              <td className="border-b px-4 py-3">
+          <TableBody>
+            <TableRow>
+              <TableCell className="border-b px-4 py-3">Loan</TableCell>
+              <TableCell className="border-b px-4 py-3">
                 Business loan from ABC Bank
-              </td>
-              <td className="border-b px-4 py-3 text-right">$50,000.00</td>
-            </tr>
-            <tr>
-              <td className="border-b px-4 py-3">Credit Card</td>
-              <td className="border-b px-4 py-3">Company credit card</td>
-              <td className="border-b px-4 py-3 text-right">$12,500.00</td>
-            </tr>
-            <tr>
-              <td className="border-b px-4 py-3">Mortgage</td>
-              <td className="border-b px-4 py-3">Office building mortgage</td>
-              <td className="border-b px-4 py-3 text-right">$250,000.00</td>
-            </tr>
-            <tr>
-              <td className="border-b px-4 py-3">Lease</td>
-              <td className="border-b px-4 py-3">Equipment lease</td>
-              <td className="border-b px-4 py-3 text-right">$5,000.00</td>
-            </tr>
-          </tbody>
+              </TableCell>
+              <TableCell className="border-b px-4 py-3 text-right">
+                $50,000.00
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="border-b px-4 py-3">Credit Card</TableCell>
+              <TableCell className="border-b px-4 py-3">
+                Company credit card
+              </TableCell>
+              <TableCell className="border-b px-4 py-3 text-right">
+                $12,500.00
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="border-b px-4 py-3">Mortgage</TableCell>
+              <TableCell className="border-b px-4 py-3">
+                Office building mortgage
+              </TableCell>
+              <TableCell className="border-b px-4 py-3 text-right">
+                $250,000.00
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="border-b px-4 py-3">Lease</TableCell>
+              <TableCell className="border-b px-4 py-3">
+                Equipment lease
+              </TableCell>
+              <TableCell className="border-b px-4 py-3 text-right">
+                $5,000.00
+              </TableCell>
+            </TableRow>
+          </TableBody>
           <tfoot>
-            <tr className="bg-muted font-medium">
-              <td className="px-4 py-3 text-left">Total</td>
-              <td className="px-4 py-3" />
-              <td className="px-4 py-3 text-right">$317,500.00</td>
-            </tr>
+            <TableRow className="bg-muted font-medium">
+              <TableCell className="px-4 py-3 text-left">Total</TableCell>
+              <TableCell className="px-4 py-3" />
+              <TableCell className="px-4 py-3 text-right">
+                $317,500.00
+              </TableCell>
+            </TableRow>
           </tfoot>
         </Table>
       </div>

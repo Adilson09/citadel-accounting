@@ -68,7 +68,7 @@ export default function Invoice() {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div className="relative w-full max-w-3xl rounded-lg bg-background shadow-2xl">
+      <div className="relative w-full max-w-3xl rounded-lg bg-background shadow-2xl p-4 md:p-8">
         <Button
           variant="ghost"
           size="icon"
@@ -78,8 +78,9 @@ export default function Invoice() {
           <XIcon className="h-5 w-5" />
           <span className="sr-only">Close</span>
         </Button>
-        <div className="grid gap-8 p-8 md:p-12">
-          <div className="flex items-center justify-between">
+        <div className="grid gap-8">
+          {/* Invoice Header */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-center gap-4">
               <Image
                 src="/placeholder.svg"
@@ -89,7 +90,9 @@ export default function Invoice() {
                 className="rounded-md"
               />
               <div className="grid gap-1">
-                <h2 className="text-2xl font-bold">Customer Fulani</h2>
+                <h2 className="text-lg md:text-2xl font-bold">
+                  Customer Fulani
+                </h2>
                 <p className="text-sm text-muted-foreground">90210, Nairobi</p>
               </div>
             </div>
@@ -103,6 +106,8 @@ export default function Invoice() {
               <p className="text-sm text-muted-foreground">Due: 10/08/2024</p>
             </div>
           </div>
+
+          {/* Bill To Section */}
           <div className="grid gap-6">
             <div className="grid gap-1">
               <p className="text-sm font-medium">Bill To:</p>
@@ -112,6 +117,8 @@ export default function Invoice() {
                 90210, Nairobi
               </p>
             </div>
+
+            {/* Invoice Table */}
             <Table>
               <TableHeader>
                 <TableRow>
@@ -121,9 +128,21 @@ export default function Invoice() {
                   <TableHead>Total</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>{/* Add table body content here */}</TableBody>
+              <TableBody>
+                {/* Assuming invoice items exist */}
+                {invoice.items.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.quantity}</TableCell>
+                    <TableCell>{item.unit_price}</TableCell>
+                    <TableCell>{item.total}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
             </Table>
           </div>
+
+          {/* Invoice Summary */}
           <div className="grid gap-4 border-t pt-4">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium">Subtotal</p>
@@ -141,7 +160,9 @@ export default function Invoice() {
               Payment is due within 30 days. Please make payment to our Accounts
             </p>
           </div>
-          <div className="flex justify-between items-center">
+
+          {/* File Upload and Download */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <FileUpload
               entityType="invoice"
               entityId={parseInt(id as string)}

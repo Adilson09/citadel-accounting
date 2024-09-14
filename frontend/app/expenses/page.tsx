@@ -100,15 +100,15 @@ export default function Expenses() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 md:px-6">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Expenses</h1>
-        <Button size="sm" className="border">
+    <div className="container mx-auto py-4 sm:py-8 px-4 sm:px-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+        <h1 className="text-2xl font-bold mb-4 sm:mb-0">Expenses</h1>
+        <Button size="sm" className="border w-full sm:w-auto">
           New Expense
         </Button>
       </div>
 
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Input
           type="date"
           name="startDate"
@@ -141,6 +141,7 @@ export default function Expenses() {
           name="category"
           value={filters.category}
           onChange={handleFilterChange}
+          className="col-span-1 sm:col-span-2 lg:col-span-1"
         >
           <option value="">All Categories</option>
           <option value="Food">Food</option>
@@ -155,30 +156,30 @@ export default function Expenses() {
         <div>
           <div className="mb-8">
             <BarchartComponent
-              className="aspect-[16/9]"
+              className="aspect-[16/9] w-full"
               onBarClick={handleBarClick}
             />
           </div>
           {filteredExpenses.length === 0 ? (
             <p>No expenses found.</p>
           ) : (
-            <div className="border rounded-lg overflow-hidden">
+            <div className="border rounded-lg overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Category</TableHead>
+                    <TableHead className="whitespace-nowrap">Date</TableHead>
+                    <TableHead className="whitespace-nowrap">Amount</TableHead>
+                    <TableHead className="whitespace-nowrap">Category</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredExpenses.map((expense: ExpenseType) => (
                     <TableRow key={expense.id}>
-                      <TableCell>{expense.date}</TableCell>
-                      <TableCell>
+                      <TableCell className="whitespace-nowrap">{expense.date}</TableCell>
+                      <TableCell className="whitespace-nowrap">
                         ${parseFloat(expense.amount).toFixed(2)}
                       </TableCell>
-                      <TableCell>{expense.category}</TableCell>
+                      <TableCell className="whitespace-nowrap">{expense.category}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -186,7 +187,7 @@ export default function Expenses() {
             </div>
           )}
         </div>
-        <div className="bg-muted rounded-lg p-6">
+        <div className="bg-muted rounded-lg p-4 sm:p-6">
           <h2 className="text-xl font-bold mb-4">Expenses by Category</h2>
           <div className="grid gap-4">
             {Object.entries(expensesByCategory).map(

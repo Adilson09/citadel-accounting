@@ -10,20 +10,22 @@ import {
 export default function Assets() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-primary text-primary-foreground py-4 px-6">
+      <header className="bg-primary text-primary-foreground py-4 px-4 md:px-6">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <LandmarkIcon className="h-6 w-6" />
-            <h1 className="text-xl font-semibold">Acme Inc.</h1>
+            <h1 className="text-lg md:text-xl font-semibold">Acme Inc.</h1>
           </div>
-          <h2 className="text-lg font-medium">Balance Sheet</h2>
+          <h2 className="text-base md:text-lg font-medium">Balance Sheet</h2>
         </div>
       </header>
-      <main className="flex-1 bg-background py-8 px-6">
-        <div className="container mx-auto grid gap-8">
+      <main className="flex-1 bg-background py-6 px-4 md:py-8 md:px-6">
+        <div className="container mx-auto grid gap-6 md:gap-8">
           <section>
-            <h3 className="text-xl font-semibold mb-4">Current Assets</h3>
-            <div className="border rounded-lg overflow-hidden">
+            <h3 className="text-lg md:text-xl font-semibold mb-4">
+              Current Assets
+            </h3>
+            <div className="border rounded-lg overflow-hidden overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -53,8 +55,10 @@ export default function Assets() {
             </div>
           </section>
           <section>
-            <h3 className="text-xl font-semibold mb-4">Non-Current Assets</h3>
-            <div className="border rounded-lg overflow-hidden">
+            <h3 className="text-lg md:text-xl font-semibold mb-4">
+              Non-Current Assets
+            </h3>
+            <div className="border rounded-lg overflow-hidden overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -85,9 +89,8 @@ export default function Assets() {
           </section>
           <section>
             <div className="border rounded-lg p-4">
-              <div className="flex justify-between text-lg font-semibold">
+              <div className="flex justify-between text-base md:text-lg font-semibold">
                 <span>Total Assets</span>
-                {/* <span>${totalAssets.toFixed(2)}</span> */}
                 <span>$8,234,954</span>
               </div>
             </div>

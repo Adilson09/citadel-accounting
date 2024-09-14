@@ -20,16 +20,16 @@ import { Button } from "@/components/ui/button";
 
 export default function NewInvoice() {
   return (
-    <div className="container mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Create New Invoice</h1>
+    <div className="container mx-auto max-w-4xl px-4 py-6 sm:py-8">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold">Create New Invoice</h1>
         <p className="text-muted-foreground">
           Fill out the form to create a new invoice.
         </p>
       </div>
       <Card>
         <CardContent className="grid gap-6">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="customer">Customer</Label>
               <Select id="customer">
@@ -53,7 +53,7 @@ export default function NewInvoice() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="date">Date</Label>
               <Input id="date" type="text" defaultValue="01-01-1970" />
@@ -68,14 +68,14 @@ export default function NewInvoice() {
               />
             </div>
           </div>
-          <div className="border rounded-lg overflow-auto">
+          <div className="border rounded-lg overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Item</TableHead>
-                  <TableHead>Quantity</TableHead>
+                  <TableHead>Qty</TableHead>
                   <TableHead>Price</TableHead>
-                  <TableHead>Tax</TableHead>
+                  <TableHead className="hidden sm:table-cell">Tax</TableHead>
                   <TableHead>Total</TableHead>
                   <TableHead className="w-[50px]">
                     <Button variant="ghost" size="icon">
@@ -86,108 +86,66 @@ export default function NewInvoice() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select item" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">Product A</SelectItem>
-                        <SelectItem value="2">Product B</SelectItem>
-                        <SelectItem value="3">Product C</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <Input type="number" defaultValue="1" />
-                  </TableCell>
-                  <TableCell>$100.00</TableCell>
-                  <TableCell>$10.00</TableCell>
-                  <TableCell>$110.00</TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon">
-                      <XIcon className="h-4 w-4" />
-                      <span className="sr-only">Remove Item</span>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select item" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">Product A</SelectItem>
-                        <SelectItem value="2">Product B</SelectItem>
-                        <SelectItem value="3">Product C</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <Input type="number" defaultValue="2" />
-                  </TableCell>
-                  <TableCell>$50.00</TableCell>
-                  <TableCell>$5.00</TableCell>
-                  <TableCell>$110.00</TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon">
-                      <XIcon className="h-4 w-4" />
-                      <span className="sr-only">Remove Item</span>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select item" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">Product A</SelectItem>
-                        <SelectItem value="2">Product B</SelectItem>
-                        <SelectItem value="3">Product C</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell>
-                    <Input type="number" defaultValue="3" />
-                  </TableCell>
-                  <TableCell>$75.00</TableCell>
-                  <TableCell>$7.50</TableCell>
-                  <TableCell>$247.50</TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon">
-                      <XIcon className="h-4 w-4" />
-                      <span className="sr-only">Remove Item</span>
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                {[1, 2, 3].map((index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select item" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1">Product A</SelectItem>
+                          <SelectItem value="2">Product B</SelectItem>
+                          <SelectItem value="3">Product C</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        type="number"
+                        defaultValue={index}
+                        className="w-16"
+                      />
+                    </TableCell>
+                    <TableCell>${50 * index}.00</TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      ${5 * index}.00
+                    </TableCell>
+                    <TableCell>${55 * index}.00</TableCell>
+                    <TableCell>
+                      <Button variant="ghost" size="icon">
+                        <XIcon className="h-4 w-4" />
+                        <span className="sr-only">Remove Item</span>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>
-          <div className="flex justify-end gap-2">
-            <div className="text-right">
+          <div className="flex flex-col sm:flex-row sm:justify-end gap-2">
+            <div className="text-left sm:text-right">
               <div className="font-medium">Subtotal</div>
               <div className="text-muted-foreground">$425.00</div>
             </div>
-            <div className="text-right">
+            <div className="text-left sm:text-right">
               <div className="font-medium">Tax (14%)</div>
               <div className="text-muted-foreground">$42.50</div>
             </div>
-            <div className="text-right">
+            <div className="text-left sm:text-right">
               <div className="font-medium">Total</div>
               <div className="text-muted-foreground">$467.50</div>
             </div>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-end gap-2">
-          <Button variant="outline">Cancel</Button>
-          <Button variant="outline" type="submit">
+        <CardFooter className="flex flex-col sm:flex-row sm:justify-end gap-2">
+          <Button variant="outline" className="w-full sm:w-auto">
+            Cancel
+          </Button>
+          <Button variant="outline" type="submit" className="w-full sm:w-auto">
             Save Invoice
           </Button>
-          <Button variant="outline" type="submit">
+          <Button variant="outline" type="submit" className="w-full sm:w-auto">
             Save and New
           </Button>
         </CardFooter>

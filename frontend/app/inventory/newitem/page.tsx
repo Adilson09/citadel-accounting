@@ -108,9 +108,9 @@ export default function NewPurchase() {
 
   return (
     <>
-      <Card className="w-full max-w-2xl">
+      <Card className="w-full max-w-2xl mx-auto">
         <CardHeader className="relative">
-          <CardTitle>New Item</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl">New Item</CardTitle>
           <Button
             variant="outline"
             className="absolute top-2 right-2"
@@ -119,9 +119,9 @@ export default function NewPurchase() {
             <X className="w-4 h-4" />
           </Button>
         </CardHeader>
-        <CardContent className="grid gap-2">
+        <CardContent className="grid gap-4">
           <form onSubmit={handleSave} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="itemName">Item Name</Label>
                 <Input
@@ -162,7 +162,7 @@ export default function NewPurchase() {
                 placeholder="Enter item description"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="quantity">Quantity</Label>
                 <Input
@@ -203,11 +203,20 @@ export default function NewPurchase() {
                 rows={2}
               />
             </div>
-            <CardFooter className="flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={handleCancel}>
+            <CardFooter className="flex flex-col sm:flex-row justify-end gap-4 px-0">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
-              <Button type="submit" disabled={saveMutation.isPending}>
+              <Button
+                type="submit"
+                disabled={saveMutation.isPending}
+                className="w-full sm:w-auto"
+              >
                 {saveMutation.isPending ? "Saving..." : "Save"}
               </Button>
             </CardFooter>
@@ -216,23 +225,23 @@ export default function NewPurchase() {
       </Card>
 
       <AlertDialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-        <AlertDialogContent className="bg-slate-100">
+        <AlertDialogContent className="bg-slate-100 max-w-[90vw] sm:max-w-[425px]">
           <AlertDialogHeader>
             <AlertDialogTitle>Confirm Cancellation</AlertDialogTitle>
           </AlertDialogHeader>
           <AlertDialogDescription>
             Are you sure you want to cancel? Any unsaved changes will be lost.
           </AlertDialogDescription>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
             <AlertDialogCancel
               onClick={closeDialog}
-              className="border-green-400 text-green-700"
+              className="border-green-400 text-green-700 w-full sm:w-auto"
             >
               No, Go Back
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmCancel}
-              className="border-red-700 text-red-700"
+              className="border-red-700 text-red-700 w-full sm:w-auto"
             >
               Yes, Cancel
             </AlertDialogAction>

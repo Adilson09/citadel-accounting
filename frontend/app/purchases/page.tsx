@@ -108,20 +108,20 @@ export default function Purchases() {
   }
 
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
+        <section className="w-full py-12 md:py-16 lg:py-24">
+          <div className="container mx-auto px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-              <div className="flex flex-col justify-center space-y-4">
+              <div className="flex flex-col space-y-4">
                 <Button
-                  onClick={() => router.push("/purchases/newpurchase")} // Use router.push for navigation
-                  className="ml-4 text-white py-2 px-4 rounded"
+                  onClick={() => router.push("/purchases/newpurchase")}
+                  className="text-white py-2 px-4 rounded bg-blue-500 hover:bg-blue-600"
                 >
                   New Purchase
                 </Button>
               </div>
-              <div>
+              <div className="space-y-4">
                 <Input
                   type="date"
                   name="startDate"
@@ -166,14 +166,14 @@ export default function Purchases() {
             </div>
           </div>
         </section>
-        <section className="w-full py-8 md:py-24 lg:py-32 bg-muted">
-          <div className="container grid gap-4 px-4 md:px-6 lg:grid-cols-3 lg:gap-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
+        <section className="w-full py-8 md:py-12 lg:py-24 bg-gray-100">
+          <div className="container mx-auto grid gap-4 px-4 md:px-6 lg:grid-cols-3 lg:gap-6">
+            <Card className="bg-white shadow-md">
+              <CardHeader className="flex items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">
                   Total Purchases
                 </CardTitle>
-                <DollarSignIcon className="w-4 h-4 text-muted-foreground" />
+                <DollarSignIcon className="w-4 h-4 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
@@ -185,7 +185,7 @@ export default function Purchases() {
                     )
                     .toFixed(2)}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-gray-500">
                   Total amount of filtered purchases
                 </p>
               </CardContent>
@@ -193,51 +193,53 @@ export default function Purchases() {
             {/* Additional Cards can be added here for other summaries */}
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <Card>
+        <section className="w-full py-12 md:py-16 lg:py-24">
+          <div className="container mx-auto px-4 md:px-6">
+            <Card className="bg-white shadow-md">
               <div className="mb-8">
                 <BarchartComponent
-                  className="aspect-[16/9]"
+                  className="w-full h-64 md:h-80 lg:h-96"
                   onBarClick={handleBarClick}
                 />
               </div>
               {filteredPurchases.length === 0 ? (
                 <p>No purchases found.</p>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Supplier</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredPurchases.map((purchase) => (
-                      <TableRow
-                        key={purchase.id}
-                        className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
-                      >
-                        <TableCell>
-                          <Link href={`/purchases/${purchase.id}`}>
-                            {purchase.purchase_date}
-                          </Link>
-                        </TableCell>
-                        <TableCell>
-                          <Link href={`/purchases/${purchase.id}`}>
-                            ${parseFloat(purchase.sub_total).toFixed(2)}
-                          </Link>
-                        </TableCell>
-                        <TableCell>
-                          <Link href={`/purchases/${purchase.id}`}>
-                            {purchase.supplier_name}
-                          </Link>
-                        </TableCell>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Supplier</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredPurchases.map((purchase) => (
+                        <TableRow
+                          key={purchase.id}
+                          className="cursor-pointer hover:bg-gray-100"
+                        >
+                          <TableCell>
+                            <Link href={`/purchases/${purchase.id}`}>
+                              {purchase.purchase_date}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link href={`/purchases/${purchase.id}`}>
+                              ${parseFloat(purchase.sub_total).toFixed(2)}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <Link href={`/purchases/${purchase.id}`}>
+                              {purchase.supplier_name}
+                            </Link>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               )}
             </Card>
           </div>

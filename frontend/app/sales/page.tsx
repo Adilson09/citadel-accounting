@@ -16,6 +16,7 @@ import { SaleType } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { DollarSignIcon, CreditCardIcon } from "@/components/ui/icons"; // Import your icons
 
 export async function getSales(): Promise<SaleType[]> {
   const response = await fetch("http://127.0.0.1:8000/api/sales/sales", {
@@ -48,7 +49,7 @@ export default function Sales() {
     queryFn: getSales,
   });
 
-  const router = useRouter(); // Use the useRouter hook
+  const router = useRouter();
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -93,7 +94,7 @@ export default function Sales() {
 
   if (error) {
     return (
-      <div>
+      <div className="text-red-500">
         Error loading resource:{" "}
         {error instanceof Error ? error.message : "Unknown error"}
       </div>
@@ -101,16 +102,16 @@ export default function Sales() {
   }
 
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex flex-col min-h-screen">
       <main className="flex-1">
         <section className="w-full py-4 bg-muted">
-          <div className="container grid gap-4 px-4 md:px-6 lg:grid-cols-3 lg:gap-6">
+          <div className="container mx-auto grid gap-4 px-4 md:px-6 lg:grid-cols-3 lg:gap-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">
                   Total Revenue
                 </CardTitle>
-                {/* <DollarSignIcon */}
+                <DollarSignIcon className="w-6 h-6 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$45,231.89</div>
@@ -122,7 +123,7 @@ export default function Sales() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                {/* credit card icon */}
+                <CreditCardIcon className="w-6 h-6 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">+12,234</div>
@@ -134,7 +135,7 @@ export default function Sales() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium">Income</CardTitle>
-                {/* dollar sign icon */}
+                <DollarSignIcon className="w-6 h-6 text-gray-500" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">$23,456.78</div>
@@ -147,9 +148,9 @@ export default function Sales() {
         </section>
 
         <section className="w-full md:py-8">
-          <div className="container px-4 md:px-6">
-            <div className="mb-6 flex items-center justify-between">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="mb-6 flex items-center justify-between flex-wrap">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Input
                   type="date"
                   name="startDate"
@@ -179,9 +180,9 @@ export default function Sales() {
                   onChange={handleFilterChange}
                 />
               </div>
-              <Button 
-                onClick={() => router.push("/sales/newsale")} // Use router.push for navigation
-                className="ml-4 text-white py-2 px-4 rounded"
+              <Button
+                onClick={() => router.push("/sales/newsale")}
+                className="mt-4 md:mt-0 ml-4 text-white py-2 px-4 rounded bg-blue-500 hover:bg-blue-600"
               >
                 New Sale
               </Button>
@@ -208,18 +209,18 @@ export default function Sales() {
                         <TableCell className="text-right">
                           ${parseFloat(sale.sub_total).toFixed(2)}
                         </TableCell>
-                        {/* <TableCell>
+                        <TableCell>
                           <Badge
                             variant="outline"
                             className={
-                              sale.open
+                              sale.paid
                                 ? "bg-green-700 text-green-200" // Paid
-                                : "bg-red-700 text-red-200" // Not Paid
+                                : "bg-red-700 text-red-200" // Unpaid
                             }
                           >
                             {sale.paid ? "Paid" : "Unpaid"}
                           </Badge>
-                        </TableCell> */}
+                        </TableCell>
                       </TableRow>
                     ))
                   ) : (

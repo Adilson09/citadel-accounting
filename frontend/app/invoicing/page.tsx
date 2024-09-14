@@ -38,12 +38,12 @@ export default function Invoicing() {
   });
 
   if (isLoading) {
-    return <p>Loading invoices...</p>;
+    return <p className="text-center p-4">Loading invoices...</p>;
   }
 
   if (error) {
     return (
-      <div>
+      <div className="text-center p-4 text-red-500">
         Error loading invoices:{" "}
         {error instanceof Error ? error.message : "Unknown error"}
       </div>
@@ -51,74 +51,79 @@ export default function Invoicing() {
   }
 
   return (
-    <div>
+    <div className="container mx-auto py-4 sm:py-8 px-4 sm:px-6">
       {invoices.length === 0 ? (
-        <p>No invoices found.</p>
+        <p className="text-center">No invoices found.</p>
       ) : (
-        <div className="container mx-auto py-8 px-4 md:px-6">
-          <div className="flex items-center justify-between mb-6">
+        <>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
             <h1 className="text-2xl font-bold">Invoices</h1>
-            <Button size="sm" className="border">
+            <Button size="sm" className="border w-full sm:w-auto">
               New Invoice
             </Button>
           </div>
-          <div className="border rounded-lg overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Invoice #</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Due Date</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invoices.map((invoice: InvoiceType) => (
-                  <TableRow key={invoice.id}>
-                    <TableCell className="font-medium">
-                      {invoice.invoice_number}
-                    </TableCell>
-                    <TableCell>{invoice.customer.first_name}</TableCell>{" "}
-                    <TableCell>
-                      {new Date(invoice.date).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell>
-                      {new Date(invoice.due_date).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell>
-                      ${parseFloat(invoice.total_amount).toFixed(2)}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="outline"
-                        className={
-                          invoice.paid
-                            ? "bg-green-700 text-green-200" // Paid
-                            : "bg-red-700 text-red-200" // Not Paid
-                        }
-                      >
-                        {invoice.paid ? "Paid" : "Unpaid"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm">
-                          View
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          Download
-                        </Button>
-                      </div>
-                    </TableCell>
+          <div className="overflow-x-auto -mx-4 sm:-mx-6">
+            <div className="inline-block min-w-full align-middle">
+              <Table className="min-w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Invoice #</TableHead>
+                    <TableHead className="hidden sm:table-cell">Customer</TableHead>
+                    <TableHead className="hidden sm:table-cell">Date</TableHead>
+                    <TableHead className="hidden sm:table-cell">Due Date</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {invoices.map((invoice: InvoiceType) => (
+                    <TableRow key={invoice.id}>
+                      <TableCell className="font-medium">
+                        {invoice.invoice_number}
+                        <span className="block sm:hidden text-sm text-gray-500">
+                          {invoice.customer.first_name} - {new Date(invoice.date).toLocaleDateString()}
+                        </span>
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">{invoice.customer.first_name}</TableCell>
+                      <TableCell className="hidden sm:table-cell">
+                        {new Date(invoice.date).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">
+                        {new Date(invoice.due_date).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell>
+                        ${parseFloat(invoice.total_amount).toFixed(2)}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className={
+                            invoice.paid
+                              ? "bg-green-700 text-green-200" // Paid
+                              : "bg-red-700 text-red-200" // Not Paid
+                          }
+                        >
+                          {invoice.paid ? "Paid" : "Unpaid"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Button variant="outline" size="sm">
+                            View
+                          </Button>
+                          <Button variant="outline" size="sm" className="hidden sm:inline-flex">
+                            Download
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
