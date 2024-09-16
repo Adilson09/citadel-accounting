@@ -11,14 +11,18 @@ class PurchaseAdmin(admin.ModelAdmin):
         'supplier_name', 
         'purchase_date', 
         'invoice_number', 
-        'tax_type', 
+        'get_tax_subtotal',  # Display the tax subtotal
         'sub_total', 
         'payment_method', 
         'cheque'
     )
-    list_filter = ('payment_method', 'tax_type')
+    list_filter = ('payment_method',)
     search_fields = ('supplier_name', 'invoice_number')
     inlines = [PurchaseItemInline]
+
+    def get_tax_subtotal(self, obj):
+        return obj.tax_subtotal  # Display the tax subtotal
+    get_tax_subtotal.short_description = 'Tax Subtotal'  # Label for the admin list
 
     def save_model(self, request, obj, form, change):
         if obj.payment_method == 'CHEQUE' and not obj.cheque:
